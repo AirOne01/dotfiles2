@@ -1,19 +1,20 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, inputs, ... }:
-
 {
-  imports =
-    [
-      # hardware scan
-      ./hardware-configuration.nix
-      # main user account
-      ../../main-user.nix
-      # home-manager
-      inputs.home-manager.nixosModules.default
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    # hardware scan
+    ./hardware-configuration.nix
+    # main user account
+    ../../main-user.nix
+    # home-manager
+    inputs.home-manager.nixosModules.default
+  ];
 
   # bootloader
   boot.loader.systemd-boot.enable = true;
@@ -21,7 +22,7 @@
 
   # luks
   boot.initrd.luks.devices."luks-dc613ea7-9635-4b56-8434-53c81fb1cc27".device = "/dev/disk/by-uuid/dc613ea7-9635-4b56-8434-53c81fb1cc27";
-  
+
   # hostname
   networking.hostName = "milkyway";
 
@@ -89,25 +90,23 @@
   nixpkgs.config.allowUnfree = true;
 
   # flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # text editors
     vim
-    neovim
 
     # networking
     wget
     curl
     nmap
-    
+
     # versioning
     git
     # shells
     bash
-    zsh
   ];
 
   # shells
@@ -119,7 +118,7 @@
   # home-manager
   home-manager = {
     # also pass inputs to home-manager modules
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users = {
       "r1" = import ./home.nix;
     };
@@ -154,5 +153,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }

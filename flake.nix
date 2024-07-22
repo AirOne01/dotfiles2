@@ -11,13 +11,13 @@
   };
 
   outputs = {nixpkgs, ...} @ inputs: {
-    # default setup
+    # main laptop
     nixosConfigurations = {
-      default = nixpkgs.lib.nixosSystem {
+      cassiopeia = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         system = "x86_64-linux";
         modules = [
-          ./hosts/default/configuration.nix
+          ./hosts/cassiopeia/configuration.nix
           inputs.home-manager.nixosModules.default
         ];
       };

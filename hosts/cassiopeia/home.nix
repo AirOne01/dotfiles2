@@ -56,6 +56,7 @@
     pkgs.vlc
 
     # text editors & ide
+    pkgs.neovim
     pkgs.vscode
     ## language servers
     pkgs.nil
