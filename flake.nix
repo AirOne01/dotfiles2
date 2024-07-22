@@ -1,5 +1,5 @@
 {
-  description = "Nixos config flake";
+  description = "r1's simple NixOS config";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -10,12 +10,12 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = {nixpkgs, ...} @ inputs: {
     # default setup
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
-	system = "x86_64-linux";
+        system = "x86_64-linux";
         modules = [
           ./hosts/default/configuration.nix
           inputs.home-manager.nixosModules.default

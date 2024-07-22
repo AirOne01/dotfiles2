@@ -1,6 +1,14 @@
-{ config, pkgs, ... }:
+{pkgs, ...}: {
+  imports = [
+    # cli
+    ../../modules/zsh.nix
+    ../../modules/oh-my-posh.nix
+    ../../modules/btop.nix
 
-{
+    # gui
+    ../../modules/wayland.nix
+  ];
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "r1";
@@ -25,11 +33,9 @@
     pkgs.grimblast
 
     # shells
-    pkgs.oh-my-posh
     pkgs.zellij
 
     # utils
-    pkgs.btop
     pkgs.neofetch
     pkgs.pfetch
 
@@ -39,27 +45,6 @@
 
     # fs management
     pkgs.eza
-
-    # wm and compositing
-    ## wm
-    pkgs.wayland
-    pkgs.wev # wayland debug
-    ## compositor
-    pkgs.hyprland
-    ## status bar
-    ## waybar experimental flag
-    (pkgs.waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      })
-    )
-    #eww # full diy solution
-    ## notifications
-    pkgs.libnotify
-    pkgs.dunst
-    ## wallpaper deamon
-    pkgs.swww
-    ## app launcher
-    pkgs.rofi-wayland
 
     # terminal emulator
     pkgs.kitty
@@ -86,7 +71,7 @@
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];})
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -96,106 +81,11 @@
     # '')
   ];
 
-  # wayland and hyprland
-  wayland.windowManager = {
-    hyprland = {
-      enable = true;
-      ## to run X apps on wayland
-      xwayland.enable = true;
-      
-      ## input config (using xorg-type config, even if it's wayland)
-
-      # config
-      settings = {
-        "$mainMod" = "SUPER";
-        bind =
-          [
-            # compositor
-            "$mainMod SHIFT, Q, killactive,"
-            "$mainMod, F, fullscreen,"
-            "$mainMod, G, togglegroup,"
-            "$mainMod SHIFT, M, exec, hyprand reload"
-            #"$mainmod SHIFT, E, exec, pkill hyprland"
-
-            # apps
-            ## terminal
-            "$mainMod, return, exec, kitty"
-            ## rofi
-            "$mainMod, S, exec, rofi -show drun -show-icons"
-            ## web browser
-            "$mainMod SHIFT, F, exec, firefox"
-            ## screenshot tool screen
-            ", print, exec, grimblast copy area"
-
-	    ## stupid french keyboard
-            #"$mainMod, code:10, workspace, 1"
-            #"$mainMod, code:11, workspace, 2"
-            #"$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-          ]
-	     ++
-          # workspaces
-          # binds $mainMod + [shift +] {1..10} to [move to] workspace {1..10}
-          builtins.concatLists (builtins.genList (
-            x: let
-            ws = let
-            c = (x + 1) / 10;
-            in
-              builtins.toString (x +  - (c * 10));
-            in [
-              "$mainMod, code:${toString (x + 10)}, workspace, ${toString (x + 1)}"
-              "$mainMod SHIFT, code:${toString (x + 10)}, movetoworkspace, ${toString (x + 1)}"
-            ]
-          ) 10);
-
-        # input config
-        input = {
-          kb_layout = "fr,us";
-          kb_options = "grp:caps_toggle";
-        };
-
-        exec-once = "bash ~/.config/hypr/start.sh";
-      };
-    };
-  };
-
-  # zsh config
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      l = "eza -laag --git --icons";
-      update = "sudo nixos-rebuild switch --flake /home/r1/.nixos/#default";
-      zz = "zellij -l compact";
-    };
-
-    history = {
-      size = 10000;
-      path = "${config.xdg.dataHome}/zsh/history";
-    };
-  };
-  programs.oh-my-posh = {
-    enable = true;
-    enableZshIntegration = true;
-    useTheme = "M365Princess";
-  };
-
   # xdg
   #xdg.portal = {
   #  enable = true;
   #  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   #};
-
-  # btop config
-  programs.btop = {
-    enable = true;
-    settings = {
-      color_theme = "horizon";
-      update_ms = "200";
-    };
-  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
