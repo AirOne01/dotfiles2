@@ -12,16 +12,23 @@
     inputs.home-manager.nixosModules.default
   ];
 
-  # bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Use the GRUB 2 boot loader.
+  boot.loader.grub = {
+    enable = true;
+
+    device = "/dev/sda";
+    useOSProber = true;
+  };
+
+  # shell
+  programs.zsh.enable = true;
+  users.users.r1.shell = pkgs.zsh;
 
   # hostname
-  networking.hostName = "cassiopeia";
+  networking.hostName = "orion";
 
   # networking (either of those)
   networking.networkmanager.enable = true;
-  #networking.wireless.enable = true;
 
   # time zone
   time.timeZone = "Europe/Paris";
@@ -43,12 +50,13 @@
   # x11 keymap
   services.xserver = {
     xkb = {
-      layout = "fr";
+      layout = "us";
       variant = "";
     };
   };
 
   # sound w/ pipewire
+  #sound.enable = true; # not to use with alsa
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -68,7 +76,7 @@
   };
 
   # console keymap
-  console.keyMap = "fr";
+  console.keyMap = "us";
 
   # user accounts
   main-user.enable = true;
@@ -97,12 +105,6 @@
     bash
   ];
 
-  # shells
-  programs.zsh.enable = true;
-
-  # wm and compositing
-  programs.hyprland.enable = true;
-
   # home-manager
   home-manager = {
     # also pass inputs to home-manager modules
@@ -115,7 +117,7 @@
     backupFileExtension = "backup";
   };
 
-  #  # This value determines the NixOS release from which the default
+  # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.

@@ -1,13 +1,14 @@
 # main-user.nix
-{ lib, config, pkgs, ... }:
-
-let
-  cfg = config.main-user;
-in
 {
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.main-user;
+in {
   options.main-user = {
-    enable
-      = lib.mkEnableOption "enable user module";
+    enable =
+      lib.mkEnableOption "enable user module";
 
     userName = lib.mkOption {
       default = "mainuser";
@@ -22,9 +23,7 @@ in
       isNormalUser = true;
       initialPassword = "password1234";
       description = "main user";
-      extraGroups = [ "networkmanager" "wheel" ];
-      shell = pkgs.zsh;
+      extraGroups = ["networkmanager" "wheel"];
     };
   };
 }
-
