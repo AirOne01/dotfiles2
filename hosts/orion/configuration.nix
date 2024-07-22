@@ -75,8 +75,12 @@
     nvidia.modesetting.enable = true;
   };
 
-  # console keymap
-  console.keyMap = "us";
+  # console
+  console = {
+    keyMap = "us";
+    font = "ter-v16b";
+    packages = with pkgs; [ terminus_font ];
+  };
 
   # user accounts
   main-user.enable = true;
