@@ -4,6 +4,7 @@
     ../../modules/zsh.nix
     ../../modules/oh-my-posh.nix
     ../../modules/btop.nix
+    ../../modules/nvf.nix
 
     # gui
     ../../modules/wayland.nix

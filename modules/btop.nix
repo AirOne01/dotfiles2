@@ -1,13 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     btop
   ];
 
-  # btop config
   programs.btop = {
     enable = true;
 

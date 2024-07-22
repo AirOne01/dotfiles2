@@ -72,14 +72,14 @@
     graphics.enable = true;
 
     # for most advanced wayland compositors
-    nvidia.modesetting.enable = true;
+    #nvidia.modesetting.enable = true;
   };
 
   # console
   console = {
     keyMap = "us";
     font = "ter-v16b";
-    packages = with pkgs; [ terminus_font ];
+    packages = with pkgs; [terminus_font];
   };
 
   # user accounts
