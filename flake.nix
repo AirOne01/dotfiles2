@@ -8,6 +8,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {nixpkgs, ...} @ inputs: {
@@ -27,6 +32,8 @@
         modules = [
           ./hosts/orion/configuration.nix
           inputs.home-manager.nixosModules.default
+	  inputs.nvf.nixosModules.default
+	  ./modules/nvf.nix
         ];
       };
     };
