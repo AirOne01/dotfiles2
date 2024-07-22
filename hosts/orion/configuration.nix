@@ -105,6 +105,7 @@
 
     # versioning
     git
+    gh # we need it system-wide for git to work
     # shells
     bash
   ];
