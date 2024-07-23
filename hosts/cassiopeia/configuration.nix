@@ -10,6 +10,8 @@
     ../../main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
+    # plymouth
+    ../../modules/plymouth.nix
   ];
 
   # bootloader
