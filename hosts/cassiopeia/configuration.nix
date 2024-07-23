@@ -50,6 +50,12 @@
     };
   };
 
+  # well... fonts
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["JetBrainsMono"];})
+    noto-fonts-emoji
+  ];
+
   # sound w/ pipewire
   security.rtkit.enable = true;
   services.pipewire = {
@@ -85,9 +91,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # text editors
-    vim
-
     # networking
     wget
     curl
