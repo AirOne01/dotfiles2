@@ -10,8 +10,6 @@
     ../../main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
-    # plymouth
-    ../../modules/plymouth.nix
   ];
 
   # bootloader
@@ -101,6 +99,7 @@
 
   # shells
   programs.zsh.enable = true;
+  users.users.r1.shell = pkgs.zsh;
 
   # wm and compositing
   programs.hyprland.enable = true;
