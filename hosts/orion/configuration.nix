@@ -10,6 +10,25 @@
     ../../main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
+    # plymouth
+    ../../modules/plymouth.nix
+  ];
+
+  # overlays
+  nixpkgs.overlays = [
+    (_: prev: {
+      gnome = prev.gnome.overrideScope (_: gnomePrev: {
+        mutter = gnomePrev.mutter.overrideAttrs (_: {
+          src = pkgs.fetchFromGitLab {
+            domain = "gitlab.gnome.org";
+            owner = "vanvugt";
+            repo = "mutter";
+            rev = "triple-buffering-v4-46";
+            hash = "sha256-nz1Enw1NjxLEF3JUG0qknJgf4328W/VvdMjJmoOEMYs=";
+          };
+        });
+      });
+    })
   ];
 
   # Use the GRUB 2 boot loader.
