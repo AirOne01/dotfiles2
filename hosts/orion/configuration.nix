@@ -115,7 +115,12 @@
     # also pass inputs to home-manager modules
     extraSpecialArgs = {inherit inputs;};
     users = {
-      "r1" = import ./home.nix;
+      "r1" = {
+        imports = [
+          inputs.nvf.homeManagerModules.default
+          ./home.nix
+        ];
+      };
     };
     useGlobalPkgs = true;
     useUserPackages = true;
