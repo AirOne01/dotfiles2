@@ -10,6 +10,25 @@
     ../../main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
+    # plymouth
+    ../../modules/plymouth.nix
+  ];
+
+  # overlays
+  nixpkgs.overlays = [
+    (_: prev: {
+      gnome = prev.gnome.overrideScope (_: gnomePrev: {
+        mutter = gnomePrev.mutter.overrideAttrs (_: {
+          src = pkgs.fetchFromGitLab {
+            domain = "gitlab.gnome.org";
+            owner = "vanvugt";
+            repo = "mutter";
+            rev = "triple-buffering-v4-46";
+            hash = "sha256-nz1Enw1NjxLEF3JUG0qknJgf4328W/VvdMjJmoOEMYs=";
+          };
+        });
+      });
+    })
   ];
 
   # Use the GRUB 2 boot loader.
@@ -47,13 +66,37 @@
     LC_TIME = "fr_FR.UTF-8";
   };
 
-  # x11 keymap
-  services.xserver = {
-    xkb = {
-      layout = "us";
-      variant = "";
+  services = {
+    # x11
+    xserver = {
+      enable = true;
+
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
     };
+
+    # gnome-settings-daemon udev rules
+    udev.packages = with pkgs; [gnome.gnome-settings-daemon];
   };
+
+  environment.gnome.excludePackages =
+    (with pkgs; [
+      gnome-photos
+      gnome-tour
+      gedit # text editor
+    ])
+    ++ (with pkgs.gnome; [
+      cheese
+      gnome-music
+      evince # document viewer
+      gnome-characters
+      totem # video video player
+    ]);
 
   # sound w/ pipewire
   #sound.enable = true; # not to use with alsa
@@ -71,6 +114,9 @@
     # opengl
     graphics.enable = true;
 
+    # disable pulesaudio
+    pulseaudio.enable = false;
+
     # for most advanced wayland compositors
     nvidia.modesetting.enable = true;
   };
@@ -79,7 +125,7 @@
   console = {
     keyMap = "us";
     font = "ter-v16b";
-    packages = with pkgs; [ terminus_font ];
+    packages = with pkgs; [terminus_font];
   };
 
   # user accounts

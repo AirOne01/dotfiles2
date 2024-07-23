@@ -32,8 +32,8 @@
         modules = [
           ./hosts/orion/configuration.nix
           inputs.home-manager.nixosModules.default
-	  inputs.nvf.nixosModules.default
-	  ./modules/nvf.nix
+          inputs.nvf.nixosModules.default
+          ./modules/nvf.nix
         ];
       };
     };

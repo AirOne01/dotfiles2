@@ -8,6 +8,7 @@
 
     # gui
     #../../modules/wayland.nix
+    ../../modules/gnome.nix
 
     # other
     ../../modules/git.nix
