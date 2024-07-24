@@ -7,7 +7,7 @@
     # hardware scan
     ./hardware-configuration.nix
     # main user account
-    ../../main-user.nix
+    ../../modules/main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
     # plymouth
@@ -118,7 +118,7 @@
     pulseaudio.enable = false;
 
     # for most advanced wayland compositors
-    nvidia.modesetting.enable = true;
+    #nvidia.modesetting.enable = true;
   };
 
   # console
@@ -141,9 +141,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # text editors
-    vim
-
     # networking
     wget
     curl
@@ -161,7 +158,12 @@
     # also pass inputs to home-manager modules
     extraSpecialArgs = {inherit inputs;};
     users = {
-      "r1" = import ./home.nix;
+      "r1" = {
+        imports = [
+          inputs.nvf.homeManagerModules.default
+          ./home.nix
+        ];
+      };
     };
     useGlobalPkgs = true;
     useUserPackages = true;

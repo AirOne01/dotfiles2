@@ -26,14 +26,13 @@
           inputs.home-manager.nixosModules.default
         ];
       };
+      # work vm
       orion = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         system = "x86_64-linux";
         modules = [
           ./hosts/orion/configuration.nix
           inputs.home-manager.nixosModules.default
-          inputs.nvf.nixosModules.default
-          ./modules/nvf.nix
         ];
       };
     };

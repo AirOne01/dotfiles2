@@ -7,7 +7,7 @@
     # hardware scan
     ./hardware-configuration.nix
     # main user account
-    ../../main-user.nix
+    ../../modules/main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
   ];
@@ -48,6 +48,12 @@
     };
   };
 
+  # well... fonts
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["JetBrainsMono"];})
+    noto-fonts-emoji
+  ];
+
   # sound w/ pipewire
   security.rtkit.enable = true;
   services.pipewire = {
@@ -83,9 +89,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # text editors
-    vim
-
     # networking
     wget
     curl
@@ -109,7 +112,13 @@
     # also pass inputs to home-manager modules
     extraSpecialArgs = {inherit inputs;};
     users = {
-      "r1" = import ./home.nix;
+      #"r1" = import ./home.nix;
+      "r1" = {
+        imports = [
+          inputs.nvf.homeManagerModules.default
+          ./home.nix
+        ];
+      };
     };
     useGlobalPkgs = true;
     useUserPackages = true;

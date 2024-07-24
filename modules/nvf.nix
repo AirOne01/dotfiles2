@@ -1,35 +1,25 @@
-{ pkgs, ... }:
+{pkgs, ...}: {
+  home.packages = with pkgs; [
+    # for lightbulb emoji
+    noto-fonts-color-emoji
+    # image display backend
+    ueberzug
+  ];
 
-{
-  #home.packages = with pkgs; [
-  #  nvf
-  #];
+  imports = [
+    ./nvf/binds.nix
+    ./nvf/filetree.nix
+    ./nvf/lsp.nix
+    ./nvf/statusline.nix
+    ./nvf/tabline.nix
+    ./nvf/telescope.nix
+    ./nvf/treesitter.nix
+    ./nvf/ui.nix
+    ./nvf/utility.nix
+    ./nvf/vim.nix
+  ];
 
   programs.nvf = {
     enable = true;
-    settings = {
-      vim = {
-        viAlias = true;
-        vimAlias = true;
-        lsp = {
-          enable = true;
-        };
-	languages = {
-	  rust.enable = true;
-	  nix.enable = true;
-	  sql.enable = true;
-	  clang.enable = true;
-	  ts.enable = true;
-	  python.enable = true;
-	  #zig.enable = true;
-	  markdown.enable = true;
-	  html.enable = true;
-	  #dart.enable = true;
-	  go.enable = true;
-	  lua.enable = true;
-	  #php.enable = true;
-	};
-      };
-    };
   };
 }

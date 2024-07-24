@@ -4,7 +4,7 @@
     ../../modules/zsh.nix
     ../../modules/oh-my-posh.nix
     ../../modules/btop.nix
-    #../../modules/nvf.nix
+    ../../modules/nvf.nix
 
     # gui
     #../../modules/wayland.nix
@@ -61,7 +61,6 @@
     pkgs.vlc
 
     # text editors & ide
-    pkgs.neovim
     pkgs.vscode
     ## language servers
     pkgs.nil
