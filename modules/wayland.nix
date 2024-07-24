@@ -1,13 +1,14 @@
 {pkgs, ...}: {
+  imports = [
+    ./eww
+  ];
+
   home.packages = with pkgs; [
     # wm
     wayland
 
     # compositor
     hyprland
-
-    # diy rust widgets
-    eww
 
     # notifications
     libnotify

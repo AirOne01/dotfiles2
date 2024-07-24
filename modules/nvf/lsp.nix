@@ -45,6 +45,7 @@
       enableTreesitter = true;
 
       # programming/scripting/configuration languages list
+      css.enable = true;
       html.enable = true;
       nix.enable = true;
       ts = {

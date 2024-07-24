@@ -1,0 +1,42 @@
+;; Created by https://github.com/airone01
+;; Designed by https://github.com/airone01
+;; Maintained by https://github.com/airone01
+
+;;;;;;;;;;;;;
+;; Widgets ;;
+;;;;;;;;;;;;;
+
+;; Top ;;
+(defwidget top []
+	(box	:orientation "v" 
+			:space-evenly "false" 
+			:valign "start" 
+))
+
+;; Bar ;;
+(defwidget bar []
+  (box :class "eww_bar"
+    :orientation "v"
+    :vexpand "false"
+    :hexpand "false"
+(top)
+))
+
+;;;;;;;;;;;;;
+;; Windows ;;
+;;;;;;;;;;;;;
+
+(defwindow bar
+  :geometry (geometry :x "0"
+    :y "0"
+    :height "100%"
+    :width "50px")
+
+  :monitor 0
+  :reserve (struts :distance "35px"
+    :side "left")
+  :wm-ignore false
+  :hexpand "false"
+  :vexpand "false"
+(bar))
+

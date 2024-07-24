@@ -1,0 +1,14 @@
+// Global
+* {
+  all: unset;
+}
+
+// Taken from Rosé-Pine
+$background: #232136;
+$foreground: #faf4ed;
+
+// EWW BAR
+.eww_bar {
+  background-color: $background;
+  padding: 0.3rem;
+}
