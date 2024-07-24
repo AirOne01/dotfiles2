@@ -7,7 +7,7 @@
     # hardware scan
     ./hardware-configuration.nix
     # main user account
-    ../../main-user.nix
+    ../../modules/main-user.nix
     # home-manager
     inputs.home-manager.nixosModules.default
   ];
