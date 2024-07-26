@@ -40,12 +40,25 @@
     LC_TIME = "fr_FR.UTF-8";
   };
 
-  # x11 keymap
-  services.xserver = {
-    xkb = {
+  security.rtkit.enable = true;
+  services = {
+    # x11 keymap
+    xserver.xkb = {
       layout = "fr";
       variant = "";
     };
+
+    # sound w/ pipewire
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
+
+    # vpn
+    mullvad-vpn.enable = true;
   };
 
   # well... fonts
@@ -53,16 +66,6 @@
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
     noto-fonts-emoji
   ];
-
-  # sound w/ pipewire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
 
   # hardware configs
   hardware = {

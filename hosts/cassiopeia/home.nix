@@ -28,31 +28,32 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
-      # other
-      ## hello world command
-      hello
-      ## screenshot tool
+      # screenshot tool
       grimblast
-
-      # shells
-      zellij
 
       # utils
       neofetch
       pfetch
+      jq
+      yt-dlp
+      gallery-dl
 
       # networking
       atac
       networkmanagerapplet
+      mullvad-vpn
 
       # fs management
       eza
 
       # terminal emulator
       kitty
+      zellij
 
       # file managers
       kdePackages.dolphin
+      kdePackages.gwenview
+      xfce.thunar
 
       # media players
       vlc
@@ -68,6 +69,10 @@
 
       # github helper
       gh
+
+      # language runtime
+      bun
+      nodejs_22
 
       # # You can also create simple shell scripts directly inside your
       # # configuration. For example, this adds a command 'my-hello' to your
