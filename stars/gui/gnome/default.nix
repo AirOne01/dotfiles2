@@ -6,7 +6,7 @@
 }: let
   cfg = config.stars.gui.gnome;
 in {
-  options.stars.gui.gnome.enable = lib.mkEnableOption "Enable custom Gnome config";
+  options.stars.gui.gnome.enable = lib.mkEnableOption "GNOME star";
 
   config = lib.mkIf cfg.enable {
     home-manager.users."r1".imports = [
@@ -19,6 +19,7 @@ in {
 
       # enable gnome and gdm
       xserver = {
+        enable = true;
         displayManager.gdm.enable = true;
         desktopManager.gnome.enable = true;
       };

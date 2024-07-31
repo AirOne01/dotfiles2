@@ -1,11 +1,6 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.default
     ../../stars
   ];
 
@@ -24,6 +19,8 @@
       enable = true;
       nvim.enable = true;
     };
+
+    core.sound.enable = true;
   };
 
   # Use the GRUB 2 boot loader.
@@ -44,13 +41,6 @@
   # networking (either of those)
   networking.networkmanager.enable = true;
 
-  services = {
-    # x11
-    xserver = {
-      enable = true;
-    };
-  };
-
   # sound w/ pipewire
   #sound.enable = true; # not to use with alsa
   security.rtkit.enable = true;
@@ -69,13 +59,6 @@
 
     # disable pulesaudio
     pulseaudio.enable = false;
-  };
-
-  # console
-  console = {
-    keyMap = "us";
-    font = "ter-v16b";
-    packages = with pkgs; [terminus_font];
   };
 
   # List packages installed in system profile. To search, run:

@@ -10,12 +10,22 @@ in {
   imports = [
     # home-manager
     inputs.home-manager.nixosModules.default
+
+    # core stars
+    ./fr.nix
+    ./sound.nix
   ];
 
-  # allow unfree packages
   config = lib.mkIf cfg.enable {
     # unfree software
     nixpkgs.config.allowUnfree = true;
+
+    # console
+    console = {
+      keyMap = "us";
+      font = "ter-v16b";
+      packages = with pkgs; [terminus_font];
+    };
 
     # flakes
     nix.settings.experimental-features = ["nix-command" "flakes"];

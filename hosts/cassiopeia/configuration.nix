@@ -1,14 +1,26 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
-    # hardware scan
     ./hardware-configuration.nix
-    # home-manager
-    inputs.home-manager.nixosModules.default
+    ../../stars
   ];
+
+  # personal framework
+  stars = {
+    enable = true;
+
+    userName = "r1";
+    gui.hypr.enable = true;
+
+    personal = {
+      enable = true;
+      nvim.enable = true;
+    };
+
+    core = {
+      fr.enable = true;
+      sound.enable = true;
+    };
+  };
 
   # bootloader
   boot.loader.systemd-boot.enable = true;
@@ -40,9 +52,6 @@
     nvidia.modesetting.enable = true;
   };
 
-  # console keymap
-  console.keyMap = "fr";
-
   # shells
   programs.zsh.enable = true;
   users.users.r1.shell = pkgs.zsh;
@@ -50,15 +59,9 @@
   # wm and compositing
   programs.hyprland.enable = true;
 
-  home-manager = {
-    users = {
-      "r1" = {
-        imports = [
-          ./home.nix
-        ];
-      };
-    };
-  };
+  home-manager.users.r1.imports = [
+    ./home.nix
+  ];
 
   #  # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
