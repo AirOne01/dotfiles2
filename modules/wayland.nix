@@ -1,25 +1,41 @@
 {pkgs, ...}: {
   imports = [
-    ./eww
+    ./waybar.nix
   ];
 
-  home.packages = with pkgs; [
-    # wm
-    wayland
+  home = {
+    packages = with pkgs; [
+      # wm
+      wayland
 
-    # compositor
-    hyprland
+      # compositor
+      hyprland
 
-    # notifications
-    libnotify
-    dunst
+      # notifications
+      libnotify
+      dunst
 
-    # wallpaper deamon
-    swww
+      # wallpaper deamon
+      swww
 
-    # app launcher
-    rofi-wayland
-  ];
+      # app launcher
+      rofi-wayland
+    ];
+    file.".config/hypr/start.sh".text = ''
+      #!/usr/bin/env bash
+
+      # wallpaper deamon
+      swww-daemon
+      # set wallpaper
+      swww img ~/.config/nixos/assets/wallpapers/keisuke-higashio-TTwwG9116j4-unsplash.jpg
+
+      # bar
+      waybar &
+
+      # dunst
+      dunst
+    '';
+  };
 
   # wayland and hyprland
   wayland.windowManager = {
@@ -27,8 +43,6 @@
       enable = true;
       ## to run X apps on wayland
       xwayland.enable = true;
-
-      ## input config (using xorg-type config, even if it's wayland)
 
       # config
       settings = {
