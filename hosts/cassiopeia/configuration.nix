@@ -1,35 +1,11 @@
-{pkgs, ...}: {
+_: {
   imports = [
     ./hardware-configuration.nix
-    ../../stars
+    ../../asterisms
   ];
 
   # personal framework
-  stars = {
-    enable = true;
-
-    userName = "r1";
-    gui.hypr.enable = true;
-
-    personal = {
-      enable = true;
-      nvim.enable = true;
-      git.enable = true;
-    };
-
-    cli = {
-      btop.enable = true;
-      oh-my-posh.enable = true;
-      zsh.enable = true;
-    };
-
-    core = {
-      fr.enable = true;
-      sound.enable = true;
-    };
-
-    code.garnix.enable = true;
-  };
+  asterisms.desktopHypr.enable = true;
 
   # bootloader
   boot.loader.systemd-boot.enable = true;
@@ -37,10 +13,6 @@
 
   # hostname
   networking.hostName = "cassiopeia";
-
-  # networking (either of those)
-  networking.networkmanager.enable = true;
-  #networking.wireless.enable = true;
 
   # hardware configs
   hardware = {
@@ -50,13 +22,6 @@
     # for most advanced wayland compositors
     nvidia.modesetting.enable = true;
   };
-
-  # shells
-  programs.zsh.enable = true;
-  users.users.r1.shell = pkgs.zsh;
-
-  # wm and compositing
-  programs.hyprland.enable = true;
 
   home-manager.users.r1.imports = [
     ./home.nix

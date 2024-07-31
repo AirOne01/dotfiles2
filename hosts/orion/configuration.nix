@@ -1,36 +1,11 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../stars
+    ../../asterisms
   ];
 
   # personal framework
-  stars = {
-    enable = true;
-
-    userName = "r1";
-
-    gui = {
-      gnome.enable = true;
-      plymouth.enable = true;
-    };
-
-    personal = {
-      enable = true;
-      nvim.enable = true;
-      git.enable = true;
-    };
-
-    cli = {
-      btop.enable = true;
-      oh-my-posh.enable = true;
-      zsh.enable = true;
-    };
-
-    code.garnix.enable = true;
-
-    core.sound.enable = true;
-  };
+  asterisms.desktopGnome.enable = true;
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {
@@ -40,34 +15,13 @@
     useOSProber = true;
   };
 
-  # shell
-  programs.zsh.enable = true;
-  users.users.r1.shell = pkgs.zsh;
-
   # hostname
   networking.hostName = "orion";
-
-  # networking (either of those)
-  networking.networkmanager.enable = true;
-
-  # sound w/ pipewire
-  #sound.enable = true; # not to use with alsa
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
 
   # hardware configs
   hardware = {
     # opengl
     graphics.enable = true;
-
-    # disable pulesaudio
-    pulseaudio.enable = false;
   };
 
   # List packages installed in system profile. To search, run:

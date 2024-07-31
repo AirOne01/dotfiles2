@@ -27,6 +27,9 @@ in {
       packages = with pkgs; [terminus_font];
     };
 
+    # Network Manager
+    networking.networkmanager.enable = true;
+
     # flakes
     nix.settings.experimental-features = lib.mkDefault ["nix-command" "flakes"];
 
