@@ -29,6 +29,7 @@ in {
 
     # Network Manager
     networking.networkmanager.enable = true;
+    networking.wireless.enable = false;
 
     # flakes
     nix.settings.experimental-features = lib.mkDefault ["nix-command" "flakes"];
