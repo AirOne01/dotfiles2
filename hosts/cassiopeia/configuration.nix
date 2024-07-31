@@ -54,7 +54,6 @@
     users = {
       "r1" = {
         imports = [
-          inputs.nvf.homeManagerModules.default
           ./home.nix
         ];
       };

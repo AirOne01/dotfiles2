@@ -1,6 +1,6 @@
 {lib, ...}: {
   imports = [
-    ./nixos/default.nix
+    ./nixos
   ];
 
   options.stars.gui.plymouth.enable = lib.mkEnableOption "Enable Plymouth and its custom config";

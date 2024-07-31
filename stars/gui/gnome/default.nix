@@ -10,7 +10,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     home-manager.users."r1".imports = [
-      ./home/default.nix
+      ./home
     ];
 
     services = {

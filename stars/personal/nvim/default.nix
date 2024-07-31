@@ -11,7 +11,7 @@ in {
   config = lib.mkIf cfg.enable {
     home-manager.users.r1.imports = [
       inputs.nvf.homeManagerModules.default
-      ./home/default.nix
+      ./home
     ];
   };
 }

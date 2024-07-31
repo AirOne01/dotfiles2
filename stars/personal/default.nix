@@ -8,9 +8,9 @@
   cfg = config.stars;
 in {
   imports = [
-    ./nvim/default.nix
-    #./secrets/default.nix
-    #./vscode/default.nix
+    ./nvim
+    #./secrets
+    #./vscode
   ];
 
   options.stars.personal = {

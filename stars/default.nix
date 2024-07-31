@@ -7,11 +7,11 @@
 in {
   imports = [
     # unconditinal
-    ./core/default.nix
+    ./core
 
     # conditional
-    ./personal/default.nix
-    ./gui/default.nix
+    ./personal
+    ./gui
   ];
 
   options.stars = {
