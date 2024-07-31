@@ -12,48 +12,49 @@ in {
     inputs.home-manager.nixosModules.default
 
     # core stars
-    ./fr.nix
-    ./sound.nix
+    ./fr
+    ./sound
   ];
 
   config = lib.mkIf cfg.enable {
     # unfree software
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = lib.mkDefault true;
 
     # console
     console = {
-      keyMap = "us";
-      font = "ter-v16b";
+      keyMap = lib.mkDefault "us";
+      font = lib.mkDefault "ter-v16b";
       packages = with pkgs; [terminus_font];
     };
 
     # flakes
-    nix.settings.experimental-features = ["nix-command" "flakes"];
+    nix.settings.experimental-features = lib.mkDefault ["nix-command" "flakes"];
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
-    environment.systemPackages = with pkgs; [
-      # networking
-      wget
-      curl
+    environment.systemPackages = with pkgs;
+      lib.mkDefault [
+        # networking
+        wget
+        curl
 
-      # versioning
-      git
+        # versioning
+        git
 
-      # shells
-      bash
+        # shells
+        bash
 
-      # text editor
-      nano
-    ];
+        # text editor
+        nano
+      ];
 
     # home-manager
     home-manager = {
       # pass inputs to home-manager modules
-      extraSpecialArgs = {inherit inputs;};
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      backupFileExtension = "backup";
+      extraSpecialArgs = lib.mkDefault {inherit inputs;};
+      useGlobalPkgs = lib.mkDefault true;
+      useUserPackages = lib.mkDefault true;
+      backupFileExtension = lib.mkDefault "backup";
     };
   };
 }

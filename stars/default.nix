@@ -6,12 +6,10 @@
   cfg = config.stars;
 in {
   imports = [
-    # unconditinal
+    ./code
     ./core
-
-    # conditional
-    ./personal
     ./gui
+    ./personal
   ];
 
   options.stars = {

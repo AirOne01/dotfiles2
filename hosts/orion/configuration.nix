@@ -20,6 +20,8 @@
       nvim.enable = true;
     };
 
+    code.garnix.enable = true;
+
     core.sound.enable = true;
   };
 

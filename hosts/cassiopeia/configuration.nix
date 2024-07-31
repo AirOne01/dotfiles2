@@ -20,6 +20,8 @@
       fr.enable = true;
       sound.enable = true;
     };
+
+    code.garnix.enable = true;
   };
 
   # bootloader
@@ -32,16 +34,6 @@
   # networking (either of those)
   networking.networkmanager.enable = true;
   #networking.wireless.enable = true;
-
-  # sound w/ pipewire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
 
   # hardware configs
   hardware = {
