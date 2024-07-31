@@ -18,6 +18,13 @@
     personal = {
       enable = true;
       nvim.enable = true;
+      git.enable = true;
+    };
+
+    cli = {
+      btop.enable = true;
+      oh-my-posh.enable = true;
+      zsh.enable = true;
     };
 
     code.garnix.enable = true;

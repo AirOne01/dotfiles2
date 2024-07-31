@@ -1,11 +1,4 @@
 {pkgs, ...}: {
-  imports = [
-    # cli
-    ../../modules/zsh.nix
-    ../../modules/oh-my-posh.nix
-    ../../modules/btop.nix
-  ];
-
   home = {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.

@@ -8,6 +8,7 @@
   cfg = config.stars;
 in {
   imports = [
+    ./git
     ./nvim
     #./secrets
     #./vscode

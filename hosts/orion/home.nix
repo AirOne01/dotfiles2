@@ -1,14 +1,4 @@
 {pkgs, ...}: {
-  imports = [
-    # cli
-    ../../modules/zsh.nix
-    ../../modules/oh-my-posh.nix
-    ../../modules/btop.nix
-
-    # other
-    ../../modules/git.nix
-  ];
-
   programs.home-manager.enable = true;
 
   home = {

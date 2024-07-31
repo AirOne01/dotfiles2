@@ -6,6 +6,7 @@
   cfg = config.stars;
 in {
   imports = [
+    ./cli
     ./code
     ./core
     ./gui
