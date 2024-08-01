@@ -1,17 +1,22 @@
-# main-user.nix
 {
   lib,
   config,
   ...
 }: let
-  cfg = config.main-user;
+  cfg = config.stars;
 in {
-  options.main-user = {
-    enable =
-      lib.mkEnableOption "enable user module";
+  imports = [
+    ./cli
+    ./code
+    ./core
+    ./gui
+    ./personal
+  ];
+
+  options.stars = {
+    enable = lib.mkEnableOption "Enable stars framework";
 
     userName = lib.mkOption {
-      default = "mainuser";
       description = ''
         username
       '';
