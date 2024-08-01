@@ -17,10 +17,7 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     packages = with pkgs; [
-      # other
-      ## hello world command
-      hello
-      ## screenshot tool
+      # screenshot tool
       grimblast
 
       # shells
@@ -48,8 +45,11 @@
 
       # text editors & ide
       vscode
-      ## language servers
       nil
+
+      # programming languages
+      bun
+      nodejs_22
 
       # internet browser
       firefox
