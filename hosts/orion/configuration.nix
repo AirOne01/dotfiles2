@@ -15,6 +15,9 @@
     useOSProber = true;
   };
 
+  # VMWare tools
+  virtualisation.vmware.guest.enable = true;
+
   # hostname
   networking.hostName = "orion";
 
