@@ -18,12 +18,15 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    systems.url = "github:nix-systems/default-linux";
   };
 
   outputs = {
+    home-manager,
     nixpkgs,
     nixos-generators,
-    home-manager,
+    systems,
     ...
   }: let
     # Extending lib by adding mkStar
@@ -31,56 +34,56 @@
     customLib = import ./lib {inherit lib;};
     extendedLib = lib.extend customLib.extend;
 
-    system = "x86_64-linux";
+    # for each linux x86_64 and aarch64
+    eachSystem = nixpkgs.lib.genAttrs (import systems);
+
+    # List of my NixOS configurations
+    nixosConfigs = [
+      # main laptop
+      "cassiopeia"
+      # work vm
+      "orion"
+    ];
+
+    # List of my NixOS images
+    nixosImages = [
+      # live ISO image for debugging and stuff
+      "ursamajor"
+    ];
   in {
     # These are my mains setups (called constellations).
-    nixosConfigurations = {
-      # main laptop
-      cassiopeia = nixpkgs.lib.nixosSystem {
+    nixosConfigurations = lib.genAttrs nixosConfigs (name:
+      nixpkgs.lib.nixosSystem {
         lib = extendedLib;
-        inherit system;
+        system = "x86_64-linux";
 
         modules = [
-          ./constellations/cassiopeia/configuration.nix
+          ./constellations/${name}/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.r1 = import ./constellations/cassiopeia/home.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.r1 = import ./constellations/${name}/home.nix;
+            };
           }
         ];
-      };
-      # work vm
-      orion = nixpkgs.lib.nixosSystem {
-        lib = extendedLib;
-        inherit system;
+      });
 
-        modules = [
-          ./constellations/orion/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.r1 = import ./constellations/orion/home.nix;
-          }
-        ];
-      };
-    };
     # And those are my more temporary setups.
     # This is the place where I define
     # my on-the-go ISO images, like Ursa Major.
-    packages = {
-      # live ISO image for debugging and stuff
-      ursa-major = nixos-generators.nixosGenerate {
-        lib = extendedLib;
-        inherit system;
+    packages = eachSystem (system:
+      lib.genAttrs nixosImages (name:
+        nixos-generators.nixosGenerate {
+          lib = extendedLib;
+          inherit system;
 
-        modules = [
-          ./constellations/ursamajor
-          home-manager.nixosModules.default
-        ];
-        format = "install-iso";
-      };
-    };
+          modules = [
+            ./constellations/${name}
+            home-manager.nixosModules.default
+          ];
+          format = "install-iso";
+        }));
   };
 }
