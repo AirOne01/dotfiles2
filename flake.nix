@@ -18,12 +18,16 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # for linux x86_64 and aarch64
+    systems.url = "github:nix-systems/default-linux";
   };
 
   outputs = {
+    home-manager,
     nixpkgs,
     nixos-generators,
-    home-manager,
+    systems,
     ...
   }: let
     # Extending lib by adding mkStar
@@ -31,14 +35,14 @@
     customLib = import ./lib {inherit lib;};
     extendedLib = lib.extend customLib.extend;
 
-    system = "x86_64-linux";
+    eachSystem = nixpkgs.lib.genAttrs (import systems);
   in {
     # These are my mains setups (called constellations).
     nixosConfigurations = {
       # main laptop
       cassiopeia = nixpkgs.lib.nixosSystem {
         lib = extendedLib;
-        inherit system;
+        system = "x86_64-linux";
 
         modules = [
           ./constellations/cassiopeia/configuration.nix
@@ -53,7 +57,7 @@
       # work vm
       orion = nixpkgs.lib.nixosSystem {
         lib = extendedLib;
-        inherit system;
+        system = "x86_64-linux";
 
         modules = [
           ./constellations/orion/configuration.nix
@@ -66,10 +70,11 @@
         ];
       };
     };
+
     # And those are my more temporary setups.
     # This is the place where I define
     # my on-the-go ISO images, like Ursa Major.
-    packages = {
+    packages = eachSystem (system: {
       # live ISO image for debugging and stuff
       ursa-major = nixos-generators.nixosGenerate {
         lib = extendedLib;
@@ -81,6 +86,6 @@
         ];
         format = "install-iso";
       };
-    };
+    });
   };
 }
