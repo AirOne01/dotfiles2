@@ -11,14 +11,12 @@ in {
     ./git
     ./nvim
     #./secrets
-    #./vscode
   ];
 
   options.stars.personal = {
     enable = lib.mkEnableOption "Enable personal configurations";
 
     #secrets.enable = lib.mkEnableOption "Enable personal secrets";
-    #vscode.enable = lib.mkEnableOption "Enable custom VSCode OSS config";
   };
 
   config = lib.mkIf (cfg.personal.enable

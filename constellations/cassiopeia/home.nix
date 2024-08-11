@@ -1,9 +1,11 @@
 {pkgs, ...}: {
+  #programs.home-manager.enable = true;
+
   home = {
     # Home Manager needs a bit of information about you and the paths it should
     # manage.
-    username = "r1";
-    homeDirectory = "/home/r1";
+    #username = "r1";
+    #homeDirectory = "/home/r1";
 
     # This value determines the Home Manager release that your configuration is
     # compatible with. This helps avoid breakage when a new Home Manager release
@@ -44,7 +46,7 @@
       vlc
 
       # text editors & ide
-      vscode
+      vscodium
       nil
 
       # programming languages
@@ -53,17 +55,10 @@
 
       # internet browser
       firefox
-      google-chrome
+      chromium # waiting for thorium @ https://github.com/NixOS/nixpkgs/pull/284085
 
       # github helper
       gh
-
-      # # You can also create simple shell scripts directly inside your
-      # # configuration. For example, this adds a command 'my-hello' to your
-      # # environment:
-      # (writeShellScriptBin "my-hello" ''
-      #   echo "Hello, ${config.home.username}!"
-      # '')
     ];
 
     # Home Manager can also manage your environment variables through
@@ -92,7 +87,4 @@
       NIXOS_OZONE_WL = "1";
     };
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }

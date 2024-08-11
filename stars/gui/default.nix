@@ -1,7 +1,3 @@
 _: {
-  imports = [
-    ./gnome
-    ./hypr
-    ./plymouth
-  ];
+  imports = [./gnome];
 }

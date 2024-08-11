@@ -1,11 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../asterisms
   ];
-
-  # personal framework
-  asterisms.desktopGnome.enable = true;
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {
@@ -42,13 +38,11 @@
     bash
   ];
 
-  # home-manager
+  users.users.r1.isNormalUser = true;
+
   home-manager = {
     users = {
-      "r1" = {
-        #name = "r1";
-        #home = "/home/r1";
-
+      r1 = {
         imports = [
           ./home.nix
         ];

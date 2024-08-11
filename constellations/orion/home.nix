@@ -1,9 +1,14 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   programs.home-manager.enable = true;
 
   home = {
     username = "r1";
     homeDirectory = "/home/r1";
+    #homeDirectory = lib.mkForce "/home/r1";
 
     # This value determines the Home Manager release that your configuration is
     # compatible with. This helps avoid breakage when a new Home Manager release
@@ -45,26 +50,13 @@
       vlc
 
       # text editors & ide
-      vscode
+      vscodium
       nil
       alejandra
 
       # internet browser
       firefox
-      google-chrome
-
-      # # It is sometimes useful to fine-tune packages, for example, by applying
-      # # overrides. You can do that directly here, just don't forget the
-      # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-      # # fonts?
-      #(nerdfonts.override {fonts = ["JetBrainsMono"];})
-
-      # # You can also create simple shell scripts directly inside your
-      # # configuration. For example, this adds a command 'my-hello' to your
-      # # environment:
-      # (writeShellScriptBin "my-hello" ''
-      #   echo "Hello, ${config.home.username}!"
-      # '')
+      chromium # waiting for thorium @ https://github.com/NixOS/nixpkgs/pull/284085
     ];
 
     sessionVariables = {

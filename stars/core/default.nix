@@ -1,56 +1,16 @@
 {
   lib,
   inputs,
-  pkgs,
-  config,
   ...
-}: let
-  cfg = config.stars;
-in {
-  imports = [
-    # home-manager
-    inputs.home-manager.nixosModules.default
+}: {
+  imports = [./iso];
 
-    # core stars
-    ./fr
-    ./sound
-  ];
-
-  config = lib.mkIf cfg.enable {
+  config = {
     # unfree software
     nixpkgs.config.allowUnfree = lib.mkDefault true;
 
-    # console
-    console = {
-      keyMap = lib.mkDefault "us";
-      font = lib.mkDefault "ter-v16b";
-      packages = with pkgs; [terminus_font];
-    };
-
-    # Network Manager
-    networking.networkmanager.enable = true;
-    networking.wireless.enable = false;
-
     # flakes
     nix.settings.experimental-features = lib.mkDefault ["nix-command" "flakes"];
-
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
-    environment.systemPackages = with pkgs;
-      lib.mkDefault [
-        # networking
-        wget
-        curl
-
-        # versioning
-        git
-
-        # shells
-        bash
-
-        # text editor
-        nano
-      ];
 
     # home-manager
     home-manager = {

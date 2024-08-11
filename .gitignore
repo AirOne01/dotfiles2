@@ -1,2 +1,6 @@
+# build script log
 nixos-switch.log
+
+# isos/images
+out/
 
