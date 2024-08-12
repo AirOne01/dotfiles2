@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: let
   gnomeStar = lib.mkStar {
@@ -15,9 +16,8 @@
       kora-icon-theme
       # additional software
       themechanger
-      # test
-      btop
     ];
+
     extraConfig = {
       services = {
         # X11 server config
@@ -31,36 +31,39 @@
         # Patch for GNOME2 applications
         dbus.packages = with pkgs; [gnome2.GConf];
       };
-      home-manager.users.nixos = {
-        dconf = {
-          enable = true;
-          # GNOME shell settings
-          settings."org/gnome/shell" = {
-            disable-user-extensions = false;
-            enable-extensions = with pkgs.gnomeExtensions; [
-              blur-my-shell.extensionUuid
-              gsconnect.extensionUuid
-              dock-from-dash.extensionUuid
-              user-themes.extensionUuid
-            ];
-          };
-          # GNOME default color scheme
-          settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    };
+
+    extraHomeConfig = {
+      dconf = {
+        enable = true;
+        # GNOME shell settings
+        settings."org/gnome/shell" = {
+          disable-user-extensions = false;
+          enable-extensions = with pkgs.gnomeExtensions; [
+            blur-my-shell.extensionUuid
+            gsconnect.extensionUuid
+            dock-from-dash.extensionUuid
+            user-themes.extensionUuid
+          ];
         };
-        # GTK themes
-        gtk = {
-          theme = {
-            package = pkgs.flat-remix-gtk;
-            name = "Flat Remix GTK Dark";
-          };
-          iconTheme = {
-            package = pkgs.kora-icon-theme;
-            name = "Kora";
-          };
+        # GNOME default color scheme
+        settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+      };
+      # GTK themes
+      gtk = {
+        theme = {
+          package = pkgs.flat-remix-gtk;
+          name = "Flat Remix GTK Dark";
+        };
+        iconTheme = {
+          package = pkgs.kora-icon-theme;
+          name = "Kora";
         };
       };
     };
   };
 in {
   imports = [gnomeStar];
+
+  config.stars.pipewire = lib.mkIf config.stars.gnome.enable {enable = lib.mkDefault true;};
 }

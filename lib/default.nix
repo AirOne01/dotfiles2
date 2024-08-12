@@ -3,6 +3,7 @@
     name,
     packages ? [],
     extraConfig ? {},
+    extraHomeConfig ? {},
   }: {config, ...}: let
     cfg = config.stars.${name};
   in {
@@ -26,6 +27,9 @@
       {
         environment.systemPackages = cfg.systemPackages;
         home-manager.users.${config.stars.mainUserName}.home.packages = cfg.packages;
+      }
+      {
+        home-manager.users.${config.stars.mainUserName} = extraHomeConfig;
       }
       extraConfig
     ]);

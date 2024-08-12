@@ -6,7 +6,7 @@
 }: let
   inherit (config.stars) mainUserName;
 in {
-  imports = [./iso];
+  imports = [./iso ./pipewire];
 
   options.stars = {
     mainUserName = lib.mkOption {
@@ -37,7 +37,6 @@ in {
       useUserPackages = lib.mkDefault true;
       backupFileExtension = lib.mkDefault "backup";
 
-      # home.nix
       users.${mainUserName} = {
         # Starry should replace home.nix here \/
         #imports = [../../constellations/${config.networking.hostName}/home.nix];

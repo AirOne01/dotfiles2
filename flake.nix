@@ -54,8 +54,6 @@
     outFormats = [
       "install-iso"
       "iso"
-      "virtualbox"
-      "vmware"
     ];
 
     # combineArrays function
