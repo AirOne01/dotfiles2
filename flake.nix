@@ -58,15 +58,10 @@
         system = "x86_64-linux";
 
         modules = [
-          ./constellations/${name}/configuration.nix
           home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.r1 = import ./constellations/${name}/home.nix;
-            };
-          }
+          ./stars
+          ./constellations/${name}/hardware-configuration.nix
+          ./constellations/${name}/configuration.nix
         ];
       });
 
@@ -80,9 +75,11 @@
           inherit system;
 
           modules = [
-            ./constellations/${name}
             home-manager.nixosModules.default
+            ./stars
+            ./constellations/${name}
           ];
+
           format = "install-iso";
         }));
   };
