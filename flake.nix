@@ -34,11 +34,10 @@
     customLib = import ./lib {inherit lib;};
     extendedLib = lib.extend customLib.extend;
 
-    # for each linux x86_64 and aarch64
-    eachSystem = nixpkgs.lib.genAttrs (import systems);
+    eachSystem = f: lib.genAttrs (import systems) (system: f system);
 
     # List of my NixOS configurations
-    nixosConfigs = [
+    outConfigs = [
       # main laptop
       "cassiopeia"
       # work vm
@@ -46,44 +45,66 @@
     ];
 
     # List of my NixOS images
-    nixosImages = [
+    outImages = [
       # live ISO image for debugging and stuff
       "ursamajor"
     ];
+
+    # List of formats i want to compile my images to
+    outFormats = [
+      "install-iso"
+      "iso"
+    ];
+
+    # combineArrays function
+    combineArrays = arr1: arr2: f:
+      builtins.listToAttrs (builtins.concatMap
+        (x:
+          map
+          (y: {
+            name = "${x}-${y}";
+            value = f x y;
+          })
+          arr2)
+        arr1);
+
+    # Function to generate a single NixOS configuration
+    mkNixosConfiguration = system: format: hostName:
+      nixos-generators.nixosGenerate {
+        inherit system format;
+        lib = extendedLib;
+
+        modules = [
+          home-manager.nixosModules.default
+          ./stars
+          ./constellations/${hostName}
+        ];
+      };
+
+    # Generate packages for all combinations
+    mkPackages = system:
+      combineArrays outImages outFormats (
+        hostName: format:
+          mkNixosConfiguration system format hostName
+      );
   in {
     # These are my mains setups (called constellations).
-    nixosConfigurations = lib.genAttrs nixosConfigs (name:
+    nixosConfigurations = lib.genAttrs outConfigs (name:
       nixpkgs.lib.nixosSystem {
         lib = extendedLib;
         system = "x86_64-linux";
 
         modules = [
-          ./constellations/${name}/configuration.nix
           home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.r1 = import ./constellations/${name}/home.nix;
-            };
-          }
+          ./stars
+          ./constellations/${name}/hardware-configuration.nix
+          ./constellations/${name}/configuration.nix
         ];
       });
 
     # And those are my more temporary setups.
     # This is the place where I define
     # my on-the-go ISO images, like Ursa Major.
-    packages = eachSystem (system:
-      lib.genAttrs nixosImages (name:
-        nixos-generators.nixosGenerate {
-          lib = extendedLib;
-          inherit system;
-
-          modules = [
-            ./constellations/${name}
-            home-manager.nixosModules.default
-          ];
-          format = "install-iso";
-        }));
+    packages = eachSystem (system: mkPackages system);
   };
 }
