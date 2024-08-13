@@ -2,6 +2,7 @@
   mkStar = _: {
     name,
     packages ? [],
+    systemPackages ? [],
     extraConfig ? {},
     extraHomeConfig ? {},
   }: {config, ...}: let
@@ -9,24 +10,12 @@
   in {
     options.stars.${name} = {
       enable = lib.mkEnableOption "Enable the ${name} star";
-
-      packages = lib.mkOption {
-        type = lib.types.listOf lib.types.package;
-        default = packages;
-        description = "User packages to install";
-      };
-
-      systemPackages = lib.mkOption {
-        type = lib.types.listOf lib.types.package;
-        default = packages;
-        description = "System-wide packages to install";
-      };
     };
 
     config = lib.mkIf cfg.enable (lib.mkMerge [
       {
-        environment.systemPackages = cfg.systemPackages;
-        home-manager.users.${config.stars.mainUserName}.home.packages = cfg.packages;
+        environment.systemPackages = systemPackages;
+        home-manager.users.${config.stars.mainUserName}.home.packages = packages;
       }
       {
         home-manager.users.${config.stars.mainUserName} = extraHomeConfig;

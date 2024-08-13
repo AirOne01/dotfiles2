@@ -4,11 +4,6 @@
   home = {
     packages = with pkgs; [
       # other
-      ## hello world command
-      hello
-      ## screenshot tool
-      grimblast
-
       # shells
       zellij
 
