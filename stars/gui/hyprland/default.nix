@@ -76,7 +76,7 @@
               kb_options = "grp:caps_toggle";
             };
 
-            exec-once = "bash ~/.config/hypr/start.sh";
+            exec-once = "bash ${config.users.users.${config.stars.mainUserName}}/.config/hypr/start.sh";
           };
         };
       };

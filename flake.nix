@@ -26,9 +26,10 @@
     home-manager,
     nixpkgs,
     nixos-generators,
+    nvf,
     systems,
     ...
-  }: let
+  } @ inputs: let
     # Extending lib by adding mkStar
     inherit (nixpkgs) lib;
     customLib = import ./lib {inherit lib;};
@@ -71,12 +72,14 @@
     # Function to generate a single NixOS configuration
     mkNixosConfiguration = system: format: hostName:
       nixos-generators.nixosGenerate {
+        specialArgs = {inherit inputs;};
         inherit system format;
         lib = extendedLib;
 
         modules = [
           home-manager.nixosModules.default
           ./stars
+          ./stars_r1 # my personal stuff
           ./constellations/${hostName}
         ];
       };
@@ -91,12 +94,14 @@
     # These are my mains setups (called constellations).
     nixosConfigurations = lib.genAttrs outConfigs (name:
       nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
         lib = extendedLib;
         system = "x86_64-linux";
 
         modules = [
           home-manager.nixosModules.home-manager
           ./stars
+          ./stars_r1 # my personal stuff
           ./constellations/${name}/hardware-configuration.nix
           ./constellations/${name}/configuration.nix
         ];

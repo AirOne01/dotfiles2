@@ -3,10 +3,12 @@
   config,
   ...
 }: let
-  inherit (config.xdg) dataHome;
-
   zshStar = lib.mkStar {
     name = "zsh";
+
+    extraConfig = {
+      programs.zsh.enable = true;
+    };
 
     extraHomeConfig = {
       programs.zsh = {
@@ -23,7 +25,7 @@
 
         history = {
           size = 10000;
-          path = "${dataHome}/zsh/history";
+          #path = "${config.users.users.${config.stars.mainUserName}}/.config/zsh/history";
         };
       };
 

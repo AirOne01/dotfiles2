@@ -23,7 +23,12 @@ in {
     nix.settings.experimental-features = lib.mkDefault ["nix-command" "flakes"];
 
     # setup user
-    users.users.${mainUserName}.isNormalUser = true;
+    users.users.${mainUserName} = {
+      # UID > 1000
+      isNormalUser = true;
+      # gives sudo perms
+      extraGroups = ["wheel"];
+    };
 
     # If you change this you will
     # be cursed by the gods of open source
