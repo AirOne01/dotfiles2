@@ -32,10 +32,22 @@
   } @ inputs: let
     # Extending lib by adding mkStar
     inherit (nixpkgs) lib;
-    customLib = import ./lib {inherit lib;};
-    extendedLib = lib.extend customLib.extend;
 
     eachSystem = f: lib.genAttrs (import systems) (system: f system);
+
+    mkStars = pkgs: import ./lib/mkStars.nix {inherit lib pkgs;};
+
+    # Function to create a module that includes selected stars
+    mkStarsModule = selectedStars: {
+      config,
+      pkgs,
+      ...
+    }: let
+      allStars = mkStars pkgs;
+      starModules = lib.attrValues (lib.getAttrs selectedStars allStars);
+    in {
+      imports = starModules;
+    };
 
     # List of my NixOS configurations
     outConfigs = [
@@ -72,14 +84,16 @@
     # Function to generate a single NixOS configuration
     mkNixosConfiguration = system: format: hostName:
       nixos-generators.nixosGenerate {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+          stars = mkStars nixpkgs.legacyPackages.${system};
+        };
         inherit system format;
-        lib = extendedLib;
 
         modules = [
           home-manager.nixosModules.default
-          ./stars
-          ./stars_r1 # my personal stuff
+          #./stars
+          #./stars_r1 # my personal stuff
           ./constellations/${hostName}
         ];
       };
@@ -94,14 +108,17 @@
     # These are my mains setups (called constellations).
     nixosConfigurations = lib.genAttrs outConfigs (name:
       nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        lib = extendedLib;
+        specialArgs = {
+          inherit inputs;
+
+          stars = mkStars nixpkgs.legacyPackages.x86_64-linux;
+        };
         system = "x86_64-linux";
 
         modules = [
           home-manager.nixosModules.home-manager
-          ./stars
-          ./stars_r1 # my personal stuff
+          #./stars
+          #./stars_r1 # my personal stuff
           ./constellations/${name}/hardware-configuration.nix
           ./constellations/${name}/configuration.nix
         ];

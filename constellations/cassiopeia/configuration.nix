@@ -1,7 +1,13 @@
-_: {
+{stars, ...}: {
   # hostname
   networking.hostName = "cassiopeia";
-  stars.mainUserName = "r1";
+  #stars.mainUserName = "r1";
+
+  imports = with stars; [
+    gnome
+  ];
+
+  system.stateVersion = "24.05";
 
   # hardware configs
   hardware = {
