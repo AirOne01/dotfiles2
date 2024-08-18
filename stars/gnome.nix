@@ -9,11 +9,7 @@
     gnomeExtensions.dash-to-dock
   ];
 
-  config = {
-    config,
-    pkgs,
-    ...
-  }: {
+  config = {config, ...}: {
     # Enable the GNOME Desktop Environment
     services.xserver = {
       enable = true;
@@ -66,7 +62,7 @@
     services.flatpak.enable = true;
 
     # Add your user to necessary groups
-    users.users.yourUsername = {
+    users.users.${config.stars.mainUser} = {
       extraGroups = ["networkmanager" "video"];
     };
 

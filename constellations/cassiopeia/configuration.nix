@@ -1,11 +1,12 @@
 {stars, ...}: {
   # hostname
   networking.hostName = "cassiopeia";
-  #stars.mainUserName = "r1";
 
   imports = with stars; [
     gnome
   ];
+
+  stars.mainUser = "r1";
 
   system.stateVersion = "24.05";
 

@@ -10,7 +10,7 @@
       starModule = import file {inherit lib pkgs;};
     in {
       inherit name;
-      value = {
+      value = {config, ...}: {
         _module.args = {
           version = starModule.version or "0.0.0";
           environments = starModule.environments or [];
@@ -18,7 +18,9 @@
           systemPackages = starModule.systemPackages or [];
           packages = starModule.packages or [];
         };
-        imports = [starModule.config or {}];
+        imports = [
+          (args: starModule.config (args // {inherit config;}))
+        ];
       };
     })
     (builtins.filter (file: lib.hasSuffix ".nix" file) starFiles)

@@ -26,7 +26,6 @@
     home-manager,
     nixpkgs,
     nixos-generators,
-    nvf,
     systems,
     ...
   } @ inputs: let
@@ -34,18 +33,6 @@
     eachSystem = f: lib.genAttrs (import systems) (system: f system);
 
     mkStars = pkgs: import ./lib/mkStars.nix {inherit lib pkgs;};
-
-    # Function to create a module that includes selected stars
-    mkStarsModule = selectedStars: {
-      config,
-      pkgs,
-      ...
-    }: let
-      allStars = mkStars pkgs;
-      starModules = lib.attrValues (lib.getAttrs selectedStars allStars);
-    in {
-      imports = starModules;
-    };
 
     # List of my NixOS configurations
     outConfigs = ["cassiopeia" "orion"];
@@ -77,6 +64,7 @@
         inherit system format;
 
         modules = [
+          (import ./lib/stars-core.nix)
           home-manager.nixosModules.default
           ./constellations/${hostName}
         ];
@@ -99,6 +87,7 @@
         system = "x86_64-linux";
 
         modules = [
+          (import ./lib/stars-core.nix)
           home-manager.nixosModules.home-manager
           ./constellations/${name}/hardware-configuration.nix
           ./constellations/${name}/configuration.nix
