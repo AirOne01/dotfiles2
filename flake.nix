@@ -1,5 +1,5 @@
 {
-  description = "r1's increasignly-less-simple NixOS config";
+  description = "r1's increasingly-less-simple NixOS config";
 
   inputs = {
     home-manager = {
@@ -30,9 +30,7 @@
     systems,
     ...
   } @ inputs: let
-    # Extending lib by adding mkStar
     inherit (nixpkgs) lib;
-
     eachSystem = f: lib.genAttrs (import systems) (system: f system);
 
     mkStars = pkgs: import ./lib/mkStars.nix {inherit lib pkgs;};
@@ -50,31 +48,19 @@
     };
 
     # List of my NixOS configurations
-    outConfigs = [
-      # main laptop
-      "cassiopeia"
-      # work vm
-      "orion"
-    ];
+    outConfigs = ["cassiopeia" "orion"];
 
     # List of my NixOS images
-    outImages = [
-      # live ISO image for debugging and stuff
-      "ursamajor"
-    ];
+    outImages = ["ursamajor"];
 
     # List of formats i want to compile my images to
-    outFormats = [
-      "install-iso"
-      "iso"
-    ];
+    outFormats = ["install-iso" "iso"];
 
     # combineArrays function
     combineArrays = arr1: arr2: f:
       builtins.listToAttrs (builtins.concatMap
         (x:
-          map
-          (y: {
+          map (y: {
             name = "${x}-${y}";
             value = f x y;
           })
@@ -92,8 +78,6 @@
 
         modules = [
           home-manager.nixosModules.default
-          #./stars
-          #./stars_r1 # my personal stuff
           ./constellations/${hostName}
         ];
       };
@@ -105,28 +89,26 @@
           mkNixosConfiguration system format hostName
       );
   in {
-    # These are my mains setups (called constellations).
+    # NixOS configurations
     nixosConfigurations = lib.genAttrs outConfigs (name:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
-
           stars = mkStars nixpkgs.legacyPackages.x86_64-linux;
         };
         system = "x86_64-linux";
 
         modules = [
           home-manager.nixosModules.home-manager
-          #./stars
-          #./stars_r1 # my personal stuff
           ./constellations/${name}/hardware-configuration.nix
           ./constellations/${name}/configuration.nix
         ];
       });
 
-    # And those are my more temporary setups.
-    # This is the place where I define
-    # my on-the-go ISO images, like Ursa Major.
+    # Packages, including temporary setups (ISO images)
     packages = eachSystem (system: mkPackages system);
+
+    # You can add devShells here if needed
+    # devShells = eachSystem (system: { ... });
   };
 }
