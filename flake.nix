@@ -32,7 +32,11 @@
     inherit (nixpkgs) lib;
     eachSystem = f: lib.genAttrs (import systems) (system: f system);
 
-    mkStars = pkgs: import ./lib/mkStars.nix {inherit lib pkgs;};
+    mkStars = pkgs:
+      import ./lib/mkStars.nix {
+        inherit lib pkgs;
+        userName = "r1";
+      };
 
     # List of my NixOS configurations
     outConfigs = ["cassiopeia" "orion"];
@@ -59,7 +63,7 @@
       nixos-generators.nixosGenerate {
         specialArgs = {
           inherit inputs;
-          stars = mkStars nixpkgs.legacyPackages.${system};
+          inherit ((mkStars nixpkgs.legacyPackages.${system})) stars;
         };
         inherit system format;
 
@@ -76,13 +80,26 @@
         hostName: format:
           mkNixosConfiguration system format hostName
       );
+
+    # Function to create a devShell from a list of stars
+    mkDevShell = system: starNames: let
+      pkgs = nixpkgs.legacyPackages.${system};
+      starsLib = mkStars pkgs;
+      systemPackages = lib.concatMap (name: starsLib.stars.${name}.environment.systemPackages) starNames;
+    in
+      pkgs.mkShell {
+        buildInputs = systemPackages;
+        shellHook = ''
+          echo "Development environment loaded with packages from stars: ${toString starNames}"
+        '';
+      };
   in {
     # NixOS configurations
     nixosConfigurations = lib.genAttrs outConfigs (name:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
-          stars = mkStars nixpkgs.legacyPackages.x86_64-linux;
+          inherit ((mkStars nixpkgs.legacyPackages.x86_64-linux)) stars;
         };
         system = "x86_64-linux";
 
@@ -97,7 +114,9 @@
     # Packages, including temporary setups (ISO images)
     packages = eachSystem (system: mkPackages system);
 
-    # You can add devShells here if needed
-    # devShells = eachSystem (system: { ... });
+    # DevShells
+    devShells = eachSystem (system: {
+      rust = mkDevShell system ["dev-rust"];
+    });
   };
 }

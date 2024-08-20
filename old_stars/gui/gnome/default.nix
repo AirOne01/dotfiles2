@@ -6,6 +6,7 @@
 }: let
   gnomeStar = lib.mkStar {
     name = "gnome";
+    version = "0.1.0";
     packages = with pkgs; [
       gnomeExtensions.appindicator # subtray icons
       gnomeExtensions.blur-my-shell # blurs your shell

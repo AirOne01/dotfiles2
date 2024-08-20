@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  userName,
 }: let
   # Recursively get all .nix files and directories from the stars directory
   allItems = lib.filesystem.listFilesRecursive ../stars;
@@ -23,6 +24,23 @@
     then item + "/default.nix"
     else item;
 
+  # Function to create a star module
+  mkStarModule = name: starModule: let
+    # Import the star module
+    importedStar = import starModule {inherit lib pkgs;};
+
+    # Extract systemPackages and other fields
+    systemPackages = importedStar.systemPackages or [];
+    packages = importedStar.packages or [];
+
+    # Create the formatted star module
+    formattedStar = {
+      environment.systemPackages = systemPackages;
+      home-manager.users.${userName}.home.packages = packages;
+    };
+  in
+    formattedStar;
+
   stars = lib.listToAttrs (
     map
     (item: let
@@ -35,24 +53,18 @@
         if lib.hasSuffix "-default" name
         then lib.removeSuffix "-default" name
         else name;
-      starModule = import (getImportPath item) {inherit lib pkgs;};
+      starModule = getImportPath item;
     in {
       name = finalName;
-      value = {config, ...}: {
-        _module.args = {
-          version = starModule.version or "0.0.0";
-          environments = starModule.environments or [];
-          systemConfigs = starModule.systemConfigs or {};
-          systemPackages = starModule.systemPackages or [];
-          packages = starModule.packages or [];
-        };
-        imports = [
-          (args: starModule.config (args // {inherit config;}))
-        ];
-      };
+      value = mkStarModule finalName starModule;
     })
     validItems
   );
-in
-  stars
 
+  # Function to merge multiple star modules
+  mergeStars = starNames:
+    lib.mkMerge (map (name: stars.${name}) starNames);
+in {
+  inherit stars;
+  inherit mergeStars;
+}

@@ -4,6 +4,7 @@
 
   imports = with stars; [
     gnome
+    dev-rust
   ];
 
   stars.mainUser = "r1";

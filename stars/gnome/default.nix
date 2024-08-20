@@ -1,6 +1,4 @@
 {pkgs, ...}: {
-  version = "0.0.0";
-  environments = ["nixos"];
   systemPackages = with pkgs; [
     gnome.gnome-tweaks
     gnome.dconf-editor
@@ -65,8 +63,5 @@
     users.users.${config.stars.mainUser} = {
       extraGroups = ["networkmanager" "video"];
     };
-
-    # Add system packages
-    environment.systemPackages = config._module.args.systemPackages;
   };
 }
