@@ -25,18 +25,28 @@
     else item;
 
   # Function to create a star module
-  mkStarModule = name: starModule: let
+  mkStarModule = _: starModule: {config, ...}: let
     # Import the star module
-    importedStar = import starModule {inherit lib pkgs;};
+    importedStar = import starModule {inherit lib pkgs config;};
 
     # Extract systemPackages and other fields
     systemPackages = importedStar.systemPackages or [];
     packages = importedStar.packages or [];
 
+    # System config from the star
+    starConfig = importedStar.config or (_: {});
+
+    # Call the star's config function with the full NixOS config
+    evaluatedStarConfig = starConfig {inherit config;};
+
     # Create the formatted star module
     formattedStar = {
-      environment.systemPackages = systemPackages;
-      home-manager.users.${userName}.home.packages = packages;
+      config =
+        {
+          environment.systemPackages = systemPackages;
+          home-manager.users.${userName}.home.packages = packages;
+        }
+        // evaluatedStarConfig;
     };
   in
     formattedStar;

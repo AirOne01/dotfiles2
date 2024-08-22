@@ -1,8 +1,8 @@
-{lib, ...}: let
-  btopStar = lib.mkStar {
-    name = "btop";
+_: {
+  name = "btop";
 
-    extraHomeConfig = {
+  config = {config, ...}: {
+    home-manager.users.${config.stars.mainUser} = {
       programs.btop = {
         enable = true;
 
@@ -13,6 +13,4 @@
       };
     };
   };
-in {
-  imports = [btopStar];
 }

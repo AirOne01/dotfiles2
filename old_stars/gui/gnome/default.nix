@@ -35,26 +35,24 @@
     };
 
     extraHomeConfig = {
-      dconf = {
+      programs.gnome-shell = {
         enable = true;
-        # GNOME shell settings
-        settings."org/gnome/shell" = {
-          disable-user-extensions = false;
-          enable-extensions = with pkgs.gnomeExtensions; [
-            blur-my-shell.extensionUuid
-            gsconnect.extensionUuid
-            dock-from-dash.extensionUuid
-            user-themes.extensionUuid
-          ];
-        };
-        # GNOME default color scheme
-        settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+
+        extensions = with pkgs.gnomeExtensions; [
+          blur-my-shell.extensionUuid
+          gsconnect.extensionUuid
+          dock-from-dash.extensionUuid
+          user-themes.extensionUuid
+        ];
       };
+
       # GTK themes
       gtk = {
+        enable = true;
+
         theme = {
           package = pkgs.flat-remix-gtk;
-          name = "Flat Remix GTK Dark";
+          name = "Flat Remix GTK Light";
         };
         iconTheme = {
           package = pkgs.kora-icon-theme;

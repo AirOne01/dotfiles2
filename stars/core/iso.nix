@@ -1,12 +1,8 @@
-{
-  lib,
-  config,
-  ...
-}: let
-  isoStar = lib.mkStar {
-    name = "iso";
+{lib, ...}: {
+  name = "iso";
 
-    extraConfig = lib.mkMerge [
+  config = {config, ...}:
+    lib.mkMerge [
       {
         # Some NixOS configs
         nixpkgs.config.allowUnfree = lib.mkDefault true;
@@ -16,11 +12,8 @@
         # GDM auto login
         services.displayManager.autoLogin = {
           enable = true;
-          user = config.stars.mainUserName;
+          user = config.stars.mainUser;
         };
       })
     ];
-  };
-in {
-  imports = [isoStar];
 }

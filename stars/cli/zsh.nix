@@ -1,19 +1,12 @@
-{
-  lib,
-  config,
-  ...
-}: let
-  zshStar = lib.mkStar {
-    name = "zsh";
+_: {
+  name = "zsh";
 
-    extraConfig = {
-      programs.zsh.enable = true;
-    };
+  config = {config, ...}: {
+    programs.zsh.enable = true;
 
-    extraHomeConfig = {
+    home-manager.users.${config.stars.mainUser} = {
       programs.zsh = {
         enable = true;
-
         enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
@@ -25,13 +18,12 @@
 
         history = {
           size = 10000;
-          #path = "${config.users.users.${config.stars.mainUserName}}/.config/zsh/history";
+          # Uncomment and adjust if needed:
+          # path = "${config.users.users.${config.stars.mainUser}.home}/.config/zsh/history";
         };
       };
 
       programs.oh-my-posh.enableZshIntegration = true;
     };
   };
-in {
-  imports = [zshStar];
 }

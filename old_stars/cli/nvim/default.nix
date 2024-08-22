@@ -1,16 +1,5 @@
-{
-  lib,
-  inputs,
-  ...
-}: let
-  nvimStar = lib.mkStar {
-    name = "nvim";
-
-    extraHomeConfig.imports = [
-      inputs.nvf.homeManagerModules.default
-      ./home
-    ];
+_: {
+  config = {config, ...}: {
+    home-manager.users.${config.stars.mainUser}.imports = [./home];
   };
-in {
-  imports = [nvimStar];
 }

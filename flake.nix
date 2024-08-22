@@ -14,11 +14,6 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     systems.url = "github:nix-systems/default-linux";
   };
 
@@ -63,14 +58,26 @@
       nixos-generators.nixosGenerate {
         specialArgs = {
           inherit inputs;
-          inherit ((mkStars nixpkgs.legacyPackages.${system})) stars;
         };
         inherit system format;
 
         modules = [
-          (import ./lib/stars-core.nix)
           home-manager.nixosModules.default
+          inputs.nvf.homeManagerModules.default
+          (import ./lib/stars-core.nix)
           ./constellations/${hostName}
+          ({
+            config,
+            pkgs,
+            ...
+          }: {
+            _module.args.stars =
+              (mkStars {
+                inherit lib pkgs;
+                inherit (config.stars) mainUser;
+              })
+              .stars;
+          })
         ];
       };
 
@@ -80,32 +87,22 @@
         hostName: format:
           mkNixosConfiguration system format hostName
       );
-
-    # Function to create a devShell from a list of stars
-    mkDevShell = system: starNames: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      starsLib = mkStars pkgs;
-      systemPackages = lib.concatMap (name: starsLib.stars.${name}.environment.systemPackages) starNames;
-    in
-      pkgs.mkShell {
-        buildInputs = systemPackages;
-        shellHook = ''
-          echo "Development environment loaded with packages from stars: ${toString starNames}"
-        '';
-      };
   in {
     # NixOS configurations
-    nixosConfigurations = lib.genAttrs outConfigs (name:
+    nixosConfigurations = lib.genAttrs outConfigs (name: let
+      system = "x86_64-linux";
+    in
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
-          inherit ((mkStars nixpkgs.legacyPackages.x86_64-linux)) stars;
+          inherit ((mkStars nixpkgs.legacyPackages.${system})) stars;
         };
-        system = "x86_64-linux";
+        inherit system;
 
         modules = [
-          (import ./lib/stars-core.nix)
           home-manager.nixosModules.home-manager
+          # inputs.nvf.homeManagerModules.default
+          (import ./lib/stars-core.nix)
           ./constellations/${name}/hardware-configuration.nix
           ./constellations/${name}/configuration.nix
         ];
@@ -113,10 +110,5 @@
 
     # Packages, including temporary setups (ISO images)
     packages = eachSystem (system: mkPackages system);
-
-    # DevShells
-    devShells = eachSystem (system: {
-      rust = mkDevShell system ["dev-rust"];
-    });
   };
 }
