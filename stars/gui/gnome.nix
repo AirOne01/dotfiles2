@@ -29,11 +29,11 @@
       programs.gnome-shell = {
         enable = true;
 
-        extensions = with pkgs.gnomeExtensions; [
-          blur-my-shell.extensionUuid
-          gsconnect.extensionUuid
-          dock-from-dash.extensionUuid
-          user-themes.extensionUuid
+        extensions = [
+          {package = pkgs.gnomeExtensions.blur-my-shell;}
+          {package = pkgs.gnomeExtensions.gsconnect;}
+          {package = pkgs.gnomeExtensions.dash-to-dock;}
+          {package = pkgs.gnomeExtensions.user-themes;}
         ];
       };
 

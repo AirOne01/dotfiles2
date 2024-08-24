@@ -9,7 +9,7 @@
     cli-zsh
     core-pipewire
     dev-core
-    # gui-gnome
+    gui-gnome
     gui-kitty
     hard-graphics
     hard-nvidia # nvidia tricks
