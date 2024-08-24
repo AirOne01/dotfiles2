@@ -18,11 +18,11 @@
     security.rtkit.enable = true;
 
     # Exclude some default GNOME apps
-    environment.gnome.excludePackages = with pkgs.gnome; [
+    environment.gnome.excludePackages = with pkgs; [
       epiphany # web browser
       totem # video player
       geary # email client
-      gnome-music # music player
+      gnome.gnome-music # music player
     ];
 
     home-manager.users.${config.stars.mainUser} = {
