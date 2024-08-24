@@ -25,9 +25,13 @@
     else item;
 
   # Function to create a star module
-  mkStarModule = _: starModule: {config, ...}: let
+  mkStarModule = _: starModule: {
+    config,
+    inputs,
+    ...
+  }: let
     # Import the star module
-    importedStar = import starModule {inherit lib pkgs config;};
+    importedStar = import starModule {inherit lib pkgs config inputs;};
 
     # Extract systemPackages and other fields
     systemPackages = importedStar.systemPackages or [];

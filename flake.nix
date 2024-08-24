@@ -6,14 +6,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     systems.url = "github:nix-systems/default-linux";
   };
 
@@ -63,7 +64,6 @@
 
         modules = [
           home-manager.nixosModules.default
-          inputs.nvf.homeManagerModules.default
           (import ./lib/stars-core.nix)
           ./constellations/${hostName}
           ({
@@ -101,7 +101,6 @@
 
         modules = [
           home-manager.nixosModules.home-manager
-          # inputs.nvf.homeManagerModules.default
           (import ./lib/stars-core.nix)
           ./constellations/${name}/hardware-configuration.nix
           ./constellations/${name}/configuration.nix
