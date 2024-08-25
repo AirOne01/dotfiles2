@@ -10,6 +10,7 @@
     cli-zellij
     cli-zsh
     core-font
+    core-gh
     core-pipewire
     dev-core
     gui-gnome
