@@ -24,6 +24,8 @@
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
+      backupFileExtension = "backup";
+
       users.${config.stars.mainUser} = {
         # Add home-manager configurations for the main user here
         home = {
