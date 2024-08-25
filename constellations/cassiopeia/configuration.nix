@@ -1,5 +1,7 @@
 {stars, ...}: {
   networking.hostName = "cassiopeia";
+  stars.mainUser = "r1";
+  system.stateVersion = "24.05";
 
   imports = with stars; [
     boot-plymouth
@@ -21,7 +23,4 @@
     kbd-fr
     net-network-manager
   ];
-
-  stars.mainUser = "r1";
-  system.stateVersion = "24.05";
 }
