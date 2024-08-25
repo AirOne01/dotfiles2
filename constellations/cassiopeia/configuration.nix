@@ -15,6 +15,7 @@
     core-gh
     core-pipewire
     dev-core
+    dev-garnix
     gui-gnome
     gui-kitty
     gui-firefox
