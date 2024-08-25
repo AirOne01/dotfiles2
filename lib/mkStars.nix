@@ -51,10 +51,7 @@
       config =
         {
           environment.systemPackages = systemPackages;
-          home-manager.users.${userName}.home.packages = packages;
-        }
-        // {
-          home-manager.users.${userName} = evaluatedStarHomeConfig;
+          home-manager.users.${userName} = evaluatedStarHomeConfig // {home.packages = packages;};
         }
         // evaluatedStarConfig;
     };

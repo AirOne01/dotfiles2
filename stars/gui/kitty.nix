@@ -1,3 +1,5 @@
 {pkgs, ...}: {
-  packages = with pkgs; [kitty];
+  homeConfig = _: {
+    programs.kitty.enable = true;
+  };
 }

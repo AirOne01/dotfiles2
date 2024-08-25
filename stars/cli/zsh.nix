@@ -14,9 +14,6 @@
           zz = "zellij -l compact";
         };
       };
-
-      oh-my-posh.enableZshIntegration = true;
-      zellij.enableZshIntegration = true;
     };
   };
 
