@@ -9,6 +9,7 @@
     cli-oh-my-posh
     cli-zellij
     cli-zsh
+    core-font
     core-pipewire
     dev-core
     gui-gnome
