@@ -1,4 +1,6 @@
-_: {
+{pkgs, ...}: {
+  systemPackages = with pkgs; [zellij];
+
   homeConfiguration = _: {
     programs.zellij = {
       enable = true;
