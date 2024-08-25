@@ -15,6 +15,10 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    schizofox = {
+      url = "github:schizofox/schizofox";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     systems.url = "github:nix-systems/default-linux";
   };
 

@@ -13,6 +13,7 @@
     dev-core
     gui-gnome
     gui-kitty
+    gui-schizofox
     hard-graphics
     hard-nvidia # nvidia tricks
     kbd-fr

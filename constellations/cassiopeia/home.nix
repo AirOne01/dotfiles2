@@ -36,7 +36,6 @@
       nodejs_22
 
       # internet browser
-      firefox
       chromium # waiting for thorium @ https://github.com/NixOS/nixpkgs/pull/284085
 
       # github helper
