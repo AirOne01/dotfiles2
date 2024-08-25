@@ -1,15 +1,13 @@
 _: {
   name = "btop";
 
-  config = {config, ...}: {
-    home-manager.users.${config.stars.mainUser} = {
-      programs.btop = {
-        enable = true;
+  homeConfig = _: {
+    programs.btop = {
+      enable = true;
 
-        settings = {
-          color_theme = "horizon";
-          update_ms = 200;
-        };
+      settings = {
+        color_theme = "horizon";
+        update_ms = 200;
       };
     };
   };

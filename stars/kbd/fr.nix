@@ -1,9 +1,9 @@
 _: {
-  config = {config, ...}: {
-    home-manager.users.${config.stars.mainUser}.home = {
-      keyboard.layout = "fr";
-    };
+  homeConfig = _: {
+    home.keyboard.layout = "fr";
+  };
 
+  config = _: {
     console.keyMap = "fr";
 
     services.xserver.xkb = {

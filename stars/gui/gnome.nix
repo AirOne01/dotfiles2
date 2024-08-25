@@ -2,17 +2,40 @@
   systemPackages = with pkgs; [
     gnome.gnome-tweaks
     gnome.dconf-editor
-    gnomeExtensions.appindicator
-    gnomeExtensions.dash-to-dock # Apple-style dock
-    gnomeExtensions.appindicator # subtray icons
-    gnomeExtensions.blur-my-shell # blurs your shell
-    gnomeExtensions.gsconnect # KDE connect on GNOME
     # themes
     flat-remix-gtk
     kora-icon-theme
     # additional software
     themechanger
   ];
+
+  homeConfig = _: {
+    programs.gnome-shell = {
+      enable = true;
+
+      extensions = [
+        {package = pkgs.gnomeExtensions.blur-my-shell;}
+        {package = pkgs.gnomeExtensions.gsconnect;}
+        {package = pkgs.gnomeExtensions.dash-to-dock;}
+        {package = pkgs.gnomeExtensions.appindicator;}
+        #{package = pkgs.gnomeExtensions.user-themes;}
+      ];
+    };
+
+    # GTK themes
+    gtk = {
+      enable = true;
+
+      theme = {
+        package = pkgs.flat-remix-gtk;
+        name = "Flat Remix GTK Light";
+      };
+      iconTheme = {
+        package = pkgs.kora-icon-theme;
+        name = "Kora";
+      };
+    };
+  };
 
   config = {config, ...}: {
     security.rtkit.enable = true;
@@ -24,33 +47,6 @@
       geary # email client
       gnome.gnome-music # music player
     ];
-
-    home-manager.users.${config.stars.mainUser} = {
-      programs.gnome-shell = {
-        enable = true;
-
-        extensions = [
-          {package = pkgs.gnomeExtensions.blur-my-shell;}
-          {package = pkgs.gnomeExtensions.gsconnect;}
-          {package = pkgs.gnomeExtensions.dash-to-dock;}
-          {package = pkgs.gnomeExtensions.user-themes;}
-        ];
-      };
-
-      # GTK themes
-      gtk = {
-        enable = true;
-
-        theme = {
-          package = pkgs.flat-remix-gtk;
-          name = "Flat Remix GTK Light";
-        };
-        iconTheme = {
-          package = pkgs.kora-icon-theme;
-          name = "Kora";
-        };
-      };
-    };
 
     # Add your user to necessary groups
     users.users.${config.stars.mainUser} = {

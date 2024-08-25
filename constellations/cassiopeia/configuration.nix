@@ -4,8 +4,10 @@
   imports = with stars; [
     boot-plymouth
     cli-btop
+    cli-eza
     cli-nvim
     cli-oh-my-posh
+    cli-zellij
     cli-zsh
     core-pipewire
     dev-core

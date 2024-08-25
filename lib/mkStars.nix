@@ -39,9 +39,12 @@
 
     # System config from the star
     starConfig = importedStar.config or (_: {});
+    # Home config from the star
+    starHomeConfig = importedStar.homeConfig or (_: {});
 
-    # Call the star's config function with the full NixOS config
+    # Call the star's configs function with the full NixOS config
     evaluatedStarConfig = starConfig {inherit config;};
+    evaluatedStarHomeConfig = starHomeConfig {inherit config;};
 
     # Create the formatted star module
     formattedStar = {
@@ -49,6 +52,9 @@
         {
           environment.systemPackages = systemPackages;
           home-manager.users.${userName}.home.packages = packages;
+        }
+        // {
+          home-manager.users.${userName} = evaluatedStarHomeConfig;
         }
         // evaluatedStarConfig;
     };

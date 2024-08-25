@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: {
@@ -14,10 +15,11 @@
     users.users.${config.stars.mainUser} = {
       # UID > 1000
       isNormalUser = true;
-      # gives sudo perms
+      # gives sudo access
       extraGroups = ["wheel"];
-      # ... other user settings
     };
+
+    environment.systemPackages = with pkgs; [git];
 
     home-manager = {
       useGlobalPkgs = true;
