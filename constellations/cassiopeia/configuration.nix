@@ -24,5 +24,6 @@
     hard-nvidia # nvidia tricks
     kbd-fr
     net-network-manager
+    r1-git
   ];
 }
