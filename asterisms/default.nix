@@ -21,7 +21,6 @@ in {
     (lib.mkIf cfg.cli.enable {
       stars = {
         enable = true;
-        userName = "r1";
 
         personal = {
           enable = true;

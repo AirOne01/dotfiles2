@@ -32,22 +32,20 @@
     inherit (nixpkgs) lib;
     eachSystem = f: lib.genAttrs (import systems) (system: f system);
 
-    mkStars = pkgs:
+    mkStars = {
+      pkgs,
+      userName,
+    }:
       import ./lib/mkStars.nix {
-        inherit lib pkgs;
-        userName = "r1";
+        inherit lib pkgs userName;
       };
-
-    # List of my NixOS configurations
-    outConfigs = ["cassiopeia" "orion"];
 
     # List of my NixOS images
     outImages = ["ursamajor"];
 
     # List of formats i want to compile my images to
-    outFormats = ["install-iso" "iso"];
+    outFormats = ["install-iso"];
 
-    # combineArrays function
     combineArrays = arr1: arr2: f:
       builtins.listToAttrs (builtins.concatMap
         (x:
@@ -58,58 +56,72 @@
           arr2)
         arr1);
 
-    # Function to generate a single NixOS configuration
-    mkNixosConfiguration = system: format: hostName:
+    mkConstellationForPackage = system: format: hostName:
       nixos-generators.nixosGenerate {
         specialArgs = {
           inherit inputs;
+          inherit
+            ((mkStars {
+              pkgs = nixpkgs.legacyPackages.${system};
+              userName = "r1";
+            }))
+            stars
+            ;
         };
         inherit system format;
 
         modules = [
           home-manager.nixosModules.default
           (import ./lib/stars-core.nix)
-          ./constellations/${hostName}
-          ({
-            config,
-            pkgs,
-            ...
-          }: {
-            _module.args.stars =
-              (mkStars {
-                inherit lib pkgs;
-                inherit (config.stars) mainUser;
-              })
-              .stars;
-          })
+          ./constellations/${hostName}/configuration.nix
         ];
       };
+
+    mkConstellationForNixosConfiguration = {
+      userName,
+      constellations,
+    }:
+      lib.genAttrs constellations (name: let
+        system = "x86_64-linux";
+      in
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+            inherit
+              ((mkStars {
+                pkgs = nixpkgs.legacyPackages.${system};
+                inherit userName;
+              }))
+              stars
+              ;
+          };
+          inherit system;
+
+          modules = [
+            home-manager.nixosModules.home-manager
+            (import ./lib/stars-core.nix)
+            ./constellations/${name}/hardware-configuration.nix
+            ./constellations/${name}/configuration.nix
+          ];
+        });
 
     # Generate packages for all combinations
     mkPackages = system:
       combineArrays outImages outFormats (
         hostName: format:
-          mkNixosConfiguration system format hostName
+          mkConstellationForPackage system format hostName
       );
   in {
     # NixOS configurations
-    nixosConfigurations = lib.genAttrs outConfigs (name: let
-      system = "x86_64-linux";
-    in
-      nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          inherit ((mkStars nixpkgs.legacyPackages.${system})) stars;
-        };
-        inherit system;
-
-        modules = [
-          home-manager.nixosModules.home-manager
-          (import ./lib/stars-core.nix)
-          ./constellations/${name}/hardware-configuration.nix
-          ./constellations/${name}/configuration.nix
-        ];
-      });
+    nixosConfigurations =
+      mkConstellationForNixosConfiguration {
+        userName = "r1";
+        constellations = ["cassiopeia" "orion"];
+      }
+      // mkConstellationForNixosConfiguration {
+        userName = "rack";
+        constellations = ["aquarius"];
+      };
 
     # Packages, including temporary setups (ISO images)
     packages = eachSystem (system: mkPackages system);
