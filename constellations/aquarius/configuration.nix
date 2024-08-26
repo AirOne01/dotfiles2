@@ -20,5 +20,6 @@
     dev-core
     dev-garnix
     net-network-manager
+    r1-git
   ];
 }
