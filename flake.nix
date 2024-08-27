@@ -2,6 +2,7 @@
   description = "r1's increasingly-less-simple NixOS config";
 
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,18 +20,19 @@
       url = "github:schizofox/schizofox";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    systems.url = "github:nix-systems/default-linux";
+    systems.url = "github:nix-systems/default";
+    systems-linux.url = "github:nix-systems/default-linux";
   };
 
   outputs = {
     home-manager,
     nixpkgs,
     nixos-generators,
-    systems,
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
-    eachSystem = f: lib.genAttrs (import systems) (system: f system);
+    eachSystem = f: lib.genAttrs (import inputs.systems) (system: f system);
+    eachLinuxSystem = f: lib.genAttrs (import inputs.systems-linux) (system: f system);
 
     mkStars = {
       pkgs,
@@ -124,6 +126,11 @@
       };
 
     # Packages, including temporary setups (ISO images)
-    packages = eachSystem (system: mkPackages system);
+    packages = eachLinuxSystem (system: mkPackages system);
+
+    # Rockets
+    devShells = eachSystem (system: {
+      tauri = import ./rockets/tauri.nix {inherit system nixpkgs;};
+    });
   };
 }

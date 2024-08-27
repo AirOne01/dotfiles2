@@ -45,7 +45,7 @@
       epiphany # web browser
       totem # video player
       geary # email client
-      gnome.gnome-music # music player
+      gnome-music # music player
     ];
 
     # Add your user to necessary groups
