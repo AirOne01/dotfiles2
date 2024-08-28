@@ -3,8 +3,8 @@ _: {
     programs.git = {
       enable = true;
 
-      userName = "AirOne01";
-      userEmail = "21955960+AirOne01@users.noreply.github.com";
+      userName = "airone01";
+      userEmail = "21955960+airone01@users.noreply.github.com";
 
       aliases = {
         a = "add .";
