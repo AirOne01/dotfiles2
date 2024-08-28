@@ -1,24 +1,20 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   services.caddy = {
     enable = true;
 
     package = pkgs.caddy-custom.override {
-      externalPlugins = [
-        {
-          name = "cloudflare";
-          repo = "github.com/caddy-dns/cloudflare";
-          version = "89f16b99c18ef49c8bb470a82f895bce01cbaece";
-        }
-        {
-          name = "cache-handler";
-          repo = "github.com/caddyserver/cache-handler";
-          version = "v0.13.0";
-        }
-      ];
+      # externalPlugins = [
+      #   {
+      #     name = "cloudflare";
+      #     repo = "github.com/caddy-dns/cloudflare";
+      #     version = "89f16b99c18ef49c8bb470a82f895bce01cbaece";
+      #   }
+      #   {
+      #     name = "cache-handler";
+      #     repo = "github.com/caddyserver/cache-handler";
+      #     version = "v0.13.0";
+      #   }
+      # ];
       # ++ (
       #   # Caddy Layer4 modules
       #   lib.lists.map (name: {
