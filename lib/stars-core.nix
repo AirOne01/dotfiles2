@@ -19,7 +19,7 @@
       extraGroups = ["wheel"];
     };
 
-    environment.systemPackages = with pkgs; [git];
+    environment.systemPackages = with pkgs; [git wget curl];
 
     home-manager = {
       useGlobalPkgs = true;

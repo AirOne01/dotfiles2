@@ -118,7 +118,7 @@
     nixosConfigurations =
       mkConstellationForNixosConfiguration {
         userName = "r1";
-        constellations = ["cassiopeia" "orion"];
+        constellations = ["cassiopeia"];
       }
       // mkConstellationForNixosConfiguration {
         userName = "rack";

@@ -6,7 +6,7 @@
   pkgs = nixpkgs.legacyPackages.${system};
 
   libraries = with pkgs; [
-    webkitgtk
+    #webkitgtk # webkitgtk-2.44.3+abi=4.0 is marked as broken
     gtk3
     cairo
     gdk-pixbuf
@@ -26,7 +26,7 @@
     glib
     gtk3
     libsoup
-    webkitgtk
+    #webkitgtk # webkitgtk-2.44.3+abi=4.0 is marked as broken
     librsvg
     # js/ts
     bun

@@ -564,11 +564,11 @@
         "zig": "zig"
       },
       "locked": {
-        "lastModified": 1724521700,
-        "narHash": "sha256-HLCOzzUorkMQ4DpyoLD+4g3cXXVqIqZLDKRCG4OChfM=",
+        "lastModified": 1724786871,
+        "narHash": "sha256-VVXj+H7/ZFb4eDGD41wCkIPtBUZxG7y3EhyLujyaZRA=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "e949a51c550ce9773bc057e28ad9264bc9306bf6",
+        "rev": "c757d28ff768ae5c8522c3059dfb8fb90e74ba07",
         "type": "github"
       },
       "original": {
