@@ -28,7 +28,7 @@
             version = "3d22d6da412883875f573ee4ecca3dbb3fdf0fd0";
           }) ["layer4" "modules/l4proxy" "modules/l4tls" "modules/l4proxyprotocol"]
         );
-      vendorHash = "sha256-7cRI65foALEsfYhvdGresq7oma/cIsnVtbq+Gan5DCU=";
+      vendorHash = "sha256-bzl86zOScHH2f6m0w8H46snIWkyjta2Jl1Ht+/xp2Bs=";
     };
 
     virtualHosts."localhost".extraConfig = ''
