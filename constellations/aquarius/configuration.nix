@@ -10,6 +10,9 @@
   };
   time.timeZone = "Europe/Paris";
 
+  # Custom Caddy compiled with some modules
+  nixpkgs.overlays = [(import ../../overlays/caddy-custom)];
+
   imports = with stars;
     [
       cli-btop
@@ -20,7 +23,6 @@
       cli-zsh
       dev-core
       dev-garnix
-      net-caddy-custom # custom caddy compiled with modules
       net-network-manager
       r1-git
     ]
