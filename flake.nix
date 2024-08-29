@@ -20,6 +20,10 @@
       url = "github:schizofox/schizofox";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     systems.url = "github:nix-systems/default";
     systems-linux.url = "github:nix-systems/default-linux";
   };
@@ -74,6 +78,7 @@
 
         modules = [
           home-manager.nixosModules.default
+          inputs.sops-nix.nixosModules.sops
           (import ./lib/stars-core.nix)
           ./constellations/${hostName}/configuration.nix
         ];
@@ -101,6 +106,7 @@
 
           modules = [
             home-manager.nixosModules.home-manager
+            inputs.sops-nix.nixosModules.sops
             (import ./lib/stars-core.nix)
             ./constellations/${name}/hardware-configuration.nix
             ./constellations/${name}/configuration.nix

@@ -21,6 +21,7 @@
       cli-oh-my-posh
       cli-zellij
       cli-zsh
+      core-sops
       dev-core
       dev-garnix
       net-network-manager

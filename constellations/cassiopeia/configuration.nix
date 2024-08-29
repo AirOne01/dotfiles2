@@ -20,6 +20,7 @@
     core-font
     core-gh
     core-pipewire
+    core-sops
     dev-core
     dev-garnix
     dev-rust
