@@ -31,7 +31,7 @@
     };
 
     virtualHosts."https://air1.one".extraConfig = ''
-      respond "${builtins.readFile ./static/index.html}"
+      respond `${builtins.readFile ./static/index.html}`
     '';
   };
 }
