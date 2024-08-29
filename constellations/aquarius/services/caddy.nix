@@ -30,8 +30,8 @@
         );
     };
 
-    virtualHosts."localhost".extraConfig = ''
-      respond "Hello, world!"
+    virtualHosts."https://air1.one".extraConfig = ''
+      file_server ./static/*
     '';
   };
 }
