@@ -9,36 +9,31 @@
   system.stateVersion = "24.05";
   time.timeZone = "Europe/Paris";
 
-  # Custom Caddy compiled with some modules
-  nixpkgs.overlays = [(import ../../overlays/caddy-custom)];
-
-  imports = with stars;
-    [
-      boot-plymouth
-      cli-btop
-      cli-eza
-      cli-nvim
-      cli-oh-my-posh
-      cli-zellij
-      cli-zsh
-      core-font
-      core-gh
-      core-pipewire
-      core-sops
-      dev-core
-      dev-garnix
-      dev-rust
-      gui-gnome
-      gui-kitty
-      gui-firefox
-      #gui-schizofox
-      hard-graphics
-      hard-nvidia # nvidia tricks
-      kbd-fr
-      net-network-manager
-      r1-git
-    ]
-    ++ [../aquarius/services/caddy.nix];
+  imports = with stars; [
+    boot-plymouth
+    cli-btop
+    cli-eza
+    cli-nvim
+    cli-oh-my-posh
+    cli-zellij
+    cli-zsh
+    core-font
+    core-gh
+    core-pipewire
+    core-sops
+    dev-core
+    dev-garnix
+    dev-rust
+    gui-gnome
+    gui-kitty
+    gui-firefox
+    #gui-schizofox
+    hard-graphics
+    hard-nvidia # nvidia tricks
+    kbd-fr
+    net-network-manager
+    r1-git
+  ];
 
   home-manager.users.${config.stars.mainUser}.home.packages = with pkgs; [mullvad-vpn];
 

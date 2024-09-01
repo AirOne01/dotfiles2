@@ -10,9 +10,6 @@
   };
   time.timeZone = "Europe/Paris";
 
-  # Custom Caddy compiled with some modules
-  nixpkgs.overlays = [(import ../../overlays/caddy-custom)];
-
   imports = with stars;
     [
       cli-btop
