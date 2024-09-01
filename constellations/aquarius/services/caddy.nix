@@ -5,16 +5,16 @@
   ...
 }: {
   # Tell Caddy to load env file with token
-  systemd.services.caddy.serviceConfig = {
-    # EnvironmentFile = "${config.sops.secrets."net/caddy/cloudflare/token".path}";
-    LoadCredential = "CLOUDFLARE_API_TOKEN:${config.sops.secrets."net/caddy/cloudflare/token".path}";
-  };
+  # systemd.services.caddy.serviceConfig = {
+  #   # EnvironmentFile = "${config.sops.secrets."net/caddy/cloudflare/token".path}";
+  #   LoadCredential = "CLOUDFLARE_API_TOKEN:${config.sops.secrets."net/caddy/cloudflare/token".path}";
+  # };
 
   services.caddy = {
     enable = true;
 
     # Tell Caddy to get the use the ACME DNS API of CloudFlare
-    globalConfig = "acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}";
+    globalConfig = "acme_dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}";
 
     # Use a custom build of Caddy compiled with modules
     # See the corresponding overlay
@@ -48,9 +48,6 @@
     # It's the config hosted on my home server. #
     # More documentation on this will follow,   #
     # And maybe a wiki for all my stuff as well #
-    #                                           #
-    # This is my first step in becoming a chad  #
-    # dev kek.                                  #
     #############################################
     virtualHosts."https://air1.one".extraConfig = ''
       respond `${builtins.readFile ./static/index.html}`

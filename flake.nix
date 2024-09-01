@@ -2,6 +2,10 @@
   description = "r1's increasingly-less-simple NixOS config";
 
   inputs = {
+    # caddy-many = {
+    #   url = "github:crabdancing/nixos-caddy-with-plugins";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -107,6 +111,7 @@
           modules = [
             home-manager.nixosModules.home-manager
             inputs.sops-nix.nixosModules.sops
+            # inputs.caddy-many.nixosModules.default
             (import ./lib/stars-core.nix)
             ./constellations/${name}/hardware-configuration.nix
             ./constellations/${name}/configuration.nix
