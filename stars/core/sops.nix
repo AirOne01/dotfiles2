@@ -9,7 +9,7 @@
       defaultSopsFormat = "yaml";
       age.keyFile = "/home/${config.stars.mainUser}/.config/sops/age/keys.txt";
 
-      secrets."net/caddy/CF_API_TOKEN" = {};
+      secrets."net/caddy/cloudflare/token" = {};
     };
   };
 }
