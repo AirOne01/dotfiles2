@@ -37,9 +37,6 @@ in {
   services.caddy = {
     enable = true;
 
-    # Tell Caddy to get the use the ACME DNS API of CloudFlare
-    globalConfig = "acme_dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}";
-
     package = compiledCaddy;
 
     ############ Actual Caddy config ############
@@ -48,6 +45,9 @@ in {
     # and maybe a wiki for all my stuff as well #
     #############################################
     virtualHosts."https://air1.one".extraConfig = ''
+      # Tell Caddy to get the use the ACME DNS API of CloudFlare
+      acme_dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}
+
       respond `${builtins.readFile ./static/index.html}`
     '';
   };
