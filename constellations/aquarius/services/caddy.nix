@@ -38,7 +38,7 @@ in {
     enable = true;
 
     # Tell Caddy to get the use the ACME DNS API of CloudFlare
-    globalConfig = "dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}";
+    globalConfig = "tls {dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}}";
 
     package = compiledCaddy;
 
