@@ -46,7 +46,9 @@ in {
     #############################################
     virtualHosts."https://air1.one".extraConfig = ''
       # Tell Caddy to get the use the ACME DNS API of CloudFlare
-      tls {dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}}
+      tls {
+        dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}
+      }
 
       respond `${builtins.readFile ./static/index.html}`
     '';
