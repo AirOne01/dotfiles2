@@ -33,11 +33,34 @@
       );
     vendorHash = "sha256-NqfXipChaAGN4v//BgMAP2WmzUJNhu7yU8Cd6QiJYpg=";
   };
+
+  caddyFinal = compiledCaddy.overrideAttrs (oldAttrs: {
+    postInstall =
+      (oldAttrs.postInstall or "")
+      + ''
+        mv $out/bin/caddy $out/bin/caddy-original
+        cat > $out/bin/caddy <<EOF
+        #!/bin/sh
+        set -e
+        CLOUDFLARE_TOKEN=\$(cat ${config.sops.secrets."net/caddy/cloudflare/token".path})
+        export CLOUDFLARE_TOKEN
+        exec $out/bin/caddy-original "\$@"
+        EOF
+        chmod +x $out/bin/caddy
+      '';
+  });
 in {
+  # Define the CloudFlare secret
+  sops.secrets."net/caddy/cloudflare/token" = {
+    owner = config.services.caddy.user;
+    group = config.services.caddy.group;
+    sopsFile = ../../../secrets/net/caddy.yaml;
+  };
+
   services.caddy = {
     enable = true;
 
-    package = compiledCaddy;
+    package = caddyFinal;
 
     ############ Actual Caddy config ############
     # It's the config hosted on my home server. #
@@ -47,12 +70,12 @@ in {
     virtualHosts."https://air1.one".extraConfig = ''
       # Tell Caddy to get the use the ACME DNS API of CloudFlare
       tls {
-        dns cloudflare {file.${config.sops.secrets."net/caddy/cloudflare/token".path}}
+        dns cloudflare {$CLOUDFLARE_TOKEN}
       }
 
       respond `${builtins.readFile ./static/index.html}`
     '';
   };
 
-  environment.systemPackages = [compiledCaddy];
+  environment.systemPackages = [caddyFinal];
 }

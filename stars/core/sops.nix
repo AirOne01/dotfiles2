@@ -8,11 +8,6 @@
       defaultSopsFile = ../../secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
       age.keyFile = "/home/${config.stars.mainUser}/.config/sops/age/keys.txt";
-
-      secrets."net/caddy/cloudflare/token" = {
-        owner = "caddy";
-        sopsFile = ../../secrets/net/caddy.yaml;
-      };
     };
   };
 }
