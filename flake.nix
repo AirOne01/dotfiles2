@@ -43,11 +43,15 @@
     eachLinuxSystem = f: lib.genAttrs (import inputs.systems-linux) (system: f system);
 
     mkStars = {
-      pkgs,
+      system ? "x86_64-linux",
       userName,
     }:
       import ./lib/mkStars.nix {
-        inherit lib pkgs userName;
+        inherit lib userName;
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true; # This only affects the evaluation of stars
+        };
       };
 
     # List of my NixOS images
@@ -98,20 +102,16 @@
         nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs;
-            inherit
-              ((mkStars {
-                pkgs = nixpkgs.legacyPackages.${system};
-                inherit userName;
-              }))
-              stars
-              ;
+            inherit ((mkStars {inherit system userName;})) stars;
           };
           inherit system;
 
           modules = [
+            # Enable unfree packages by default, but allow overriding
+            {nixpkgs.config.allowUnfree = lib.mkDefault true;}
+
             home-manager.nixosModules.home-manager
             inputs.sops-nix.nixosModules.sops
-            # inputs.caddy-many.nixosModules.default
             (import ./lib/stars-core.nix)
             ./constellations/${name}/hardware-configuration.nix
             ./constellations/${name}/configuration.nix

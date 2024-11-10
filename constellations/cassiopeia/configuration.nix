@@ -26,7 +26,7 @@
     dev-core
     dev-garnix
     dev-rust
-    # gui-cursor # cannot allow unfree since pkgs is passed to NixOS, hence not available yet.
+    gui-cursor # cannot allow unfree since pkgs is passed to NixOS, hence not available yet.
     #   See https://discourse.nixos.org/t/allowunfree-doesnt-work-with-flake-managed-system/21798/4
     #   See https://github.com/NixOS/nixpkgs/issues/191910
     gui-gnome

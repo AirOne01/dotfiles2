@@ -12,6 +12,9 @@
   };
 
   config = {
+    # Allow unfree packages globally
+    nixpkgs.config.allowUnfree = lib.mkDefault true;
+
     users.users.${config.stars.mainUser} = {
       # UID > 1000
       isNormalUser = true;
