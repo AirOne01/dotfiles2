@@ -1,5 +1,5 @@
-extends:
-  - '@commitlint/config-conventional'
+# extends:
+#   - '@commitlint/config-conventional'
 
 rules:
   # Enforce conventional commits
@@ -78,8 +78,7 @@ rules:
     - - lower-case    # subject must start with lower case
 
   subject-empty:
-    - 2
-    - never          # subject cannot be empty
+    level: error
 
   subject-full-stop:
     - 2

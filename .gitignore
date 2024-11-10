@@ -27,3 +27,7 @@ hardware-configuration.nix
 
 # AI 😈
 repomix-output.txt
+
+# NodeJS
+node_modules/
+
