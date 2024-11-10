@@ -1,0 +1,10 @@
+{
+  "name": "commitlint-config",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0"
+  }
+}
+
