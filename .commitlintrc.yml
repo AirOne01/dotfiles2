@@ -78,7 +78,8 @@ rules:
     - - lower-case    # subject must start with lower case
 
   subject-empty:
-    level: error
+    - 2
+    - never          # subject cannot be empty
 
   subject-full-stop:
     - 2

@@ -4,4 +4,4 @@
 MSG_FILE=$1
 
 # Run commitlint using nix develop
-nix develop .#commitlint --command commitlint -g .commitlintrc.yml -e
+nix develop .#commitlint --command commitlint --edit $MSG_FILE

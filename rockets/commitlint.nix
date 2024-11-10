@@ -6,7 +6,7 @@
   pkgs = nixpkgs.legacyPackages.${system};
 
   packages = with pkgs; [
-    commitlint-rs
+    commitlint
   ];
 in
   pkgs.mkShell {
