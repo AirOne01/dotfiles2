@@ -7,7 +7,7 @@
   options.stars = {
     mainUser = lib.mkOption {
       type = lib.types.str;
-      description = "Name of the user that home-manager will configure and will have packages install to";
+      description = "Name of the main user";
     };
   };
 

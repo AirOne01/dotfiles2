@@ -45,7 +45,7 @@ _: {
 
         # plugins and integrations
         plugins = {
-          code-action-menu.enable = true;
+          # code-action-menu.enable = true; # Recently removed (maybe)
           lsp-signature.enable = true;
           lspsaga.enable = true;
           nvim-cmp.enable = true;

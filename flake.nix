@@ -143,32 +143,5 @@
     devShells = eachSystem (system: {
       tauri = import ./rockets/tauri.nix {inherit system nixpkgs;};
     });
-
-    # Non-NixOS configurations
-    homeConfigurations."elagouch@42" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-      modules = [
-        ({pkgs, ...}: {
-          home = {
-            username = "elagouch";
-            homeDirectory = "/home/elagouch";
-            stateVersion = "24.05";
-
-            packages = with pkgs; [
-              btop
-              neovim
-            ];
-          };
-
-          # You can also configure programs here
-          programs.git = {
-            enable = true;
-            userName = "Erwann Lagouche";
-            userEmail = "erwann.lagouche@gmail.com";
-          };
-        })
-      ];
-    };
   };
 }
